@@ -1,0 +1,17 @@
+.PanelButton {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: width 1s, height 1s, border-radius 1s;
+}
+
+.PanelButton_visible {
+  width: 260px;
+  height: 410px;
+  border-radius: 12px 12px 6px 6px;
+  padding: 5px;
+}

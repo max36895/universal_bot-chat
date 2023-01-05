@@ -1,0 +1,36 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.padding-top-s {
+  padding-top: 2px;
+}
+
+.padding-top-m {
+  padding-top: 4px;
+}
+
+.margin-top-s {
+  margin-top: 2px;
+}
+
+.margin-top-m {
+  margin-top: 4px;
+}
+
+.icon_smile::before {
+  content: "😐";
+}
+.icon-send::before {
+  content: "💬";
+}
+.icon-info::before {
+  content: "❓";
+}
+.icon-voice::before {
+  content: "🎤";
+}
+.icon-sound::before {
+  content: "🔊";
+}

@@ -1,0 +1,60 @@
+.Panel {
+  width: 250px;
+  height: 400px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  border-radius: 12px 12px 6px 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.Panel_header {
+  height: 50px;
+  text-align: center;
+  display: flex;
+  background-color: indigo;
+  flex-shrink: 0;
+}
+
+.Panel_header-caption {
+  color: #fff;
+  font-size: 18px;
+  padding: 0 12px;
+  margin: auto;
+}
+
+.Panel_header_close {
+  width: 24px;
+  height: 24px;
+  margin: auto 5px;
+  background: #ebecea;
+  border-radius: 50%;
+  display: flex;
+  cursor: pointer;
+}
+.Panel_header_close::before {
+  content: "\200b";
+  width: 4px;
+}
+.Panel_header_close:hover {
+  background: #dadada;
+}
+.Panel_header_close:active {
+  background: #cdcdcd;
+}
+
+.Panel_content {
+  flex-shrink: 1;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 1px;
+}
+
+.Panel_footer {
+  height: 40px;
+  border-top: 1px solid #abacad;
+  padding: 3px 6px 3px 6px;
+  align-items: center;
+  flex-shrink: 0;
+}

@@ -1,0 +1,23 @@
+.InputBlock {
+  display: flex;
+}
+
+.InputBlock_textarea {
+  outline: none;
+  border: 0px;
+  border-bottom: 1px solid #ebeced;
+  height: 33px;
+  font-size: 14px;
+  margin-right: 6px;
+  resize: none;
+  flex-grow: 1;
+}
+
+.InputBlock_textarea:focus {
+  border-block-color: #bcbcbc;
+}
+
+.InputBlock_Buttons {
+  display: flex;
+  flex-direction: column;
+}
