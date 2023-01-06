@@ -235,7 +235,9 @@ export default class CardsModel {
 
   getTTS(response: IRequestSend<ICardsModelResponse>): string {
     if (response.status) {
-      const tts = response.data?.response.tts || response.data?.response.text || "";
+      // Пока есть сложности с синтезом речи. Поэтому читаем просто текст как сможем
+      // todo придумать потом что-то
+      const tts = /* response.data?.response.tts || */response.data?.response.text || "";
       // remove all smile
       return tts.replace(/[^\x00-\x7Fа-яА-Я]/g, '');
     }
