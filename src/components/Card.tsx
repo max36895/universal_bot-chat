@@ -66,7 +66,6 @@ function getTypeList(props:ICardProps): React.ReactElement {
 
 export default function Card(props: ICardProps) {
     const {type = 'text'} = props;
-
     return (
     <>
         {
