@@ -1,6 +1,6 @@
 .Panel {
-  width: 250px;
-  height: 400px;
+  width: var(--panel_width);
+  height: var(--panel_height);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   border-radius: 12px 12px 6px 6px;
   overflow: hidden;
@@ -12,12 +12,12 @@
   height: 50px;
   text-align: center;
   display: flex;
-  background-color: indigo;
+  background-color: var(--panel_header_bg);
   flex-shrink: 0;
 }
 
 .Panel_header-caption {
-  color: #fff;
+  color: var(--contrast_text_color);
   font-size: 18px;
   padding: 0 12px;
   margin: auto;
@@ -27,20 +27,18 @@
   width: 24px;
   height: 24px;
   margin: auto 5px;
-  background: #ebecea;
+  background: #BCBEC070;
   border-radius: 50%;
   display: flex;
   cursor: pointer;
 }
-.Panel_header_close::before {
-  content: "\200b";
-  width: 4px;
-}
+
 .Panel_header_close:hover {
-  background: #dadada;
+  background: #BCBEC080;
 }
+
 .Panel_header_close:active {
-  background: #cdcdcd;
+  background: #BCBEC090;
 }
 
 .Panel_content {
@@ -52,9 +50,9 @@
 }
 
 .Panel_footer {
-  height: 40px;
-  border-top: 1px solid #abacad;
-  padding: 3px 6px 3px 6px;
+  height: 56px;
+  border-top: 1px solid var(--border_color);
+  padding: 3px 6px;
   align-items: center;
   flex-shrink: 0;
 }

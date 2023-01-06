@@ -1,0 +1,161 @@
+:root {
+    --bot_bg: #782FEF;
+    --user_bg: #E5F0FF;
+}
+
+.Card {
+    border-radius: 7px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    margin: 5px;
+    position: relative;
+    max-width: 250px;
+    width: 250px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.Card_image {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.Card_text {
+    padding: 0;
+    margin: 0;
+    font-size: var(--font-size-m);
+    color: var(--text_color);
+}
+
+.Card_type-text {
+    padding: 7px 5px;
+}
+
+.Card_type-text.clicable {
+    cursor: pointer;
+}
+
+.Card_type-text.clicable:hover {
+    background-color: var(--unaccented_hover_bg);
+}
+
+
+.Card_type-text.clicable:active {
+    background-color: var(--unaccented_active_bg);
+}
+
+.Card_style-user {
+    background-color: var(--user_bg);
+    color: var(--text_color);
+    text-align: right;
+    align-self: end;
+}
+
+.Card_style-bot {
+    background-color: var(--bot_bg);
+    color: var(--contrast_text_color);
+    text-align: left;
+}
+
+.Card_style-bot .Card_text-title {
+    color: var(--contrast_text_color);
+}
+  
+.Card_style-bot .Card_text-date {
+    left: unset;
+    right: 4px;
+}
+
+.Card_text-date {
+  color: var(--unaccented_text_color);
+  font-size: 10px;
+  position: absolute;
+  bottom: 1px;
+  left: 4px;
+}
+
+.Card_type-card {
+    padding: 0;
+}
+
+.Card_big-image {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 150px;
+}
+
+.Card_card-info {
+    padding: 7px;
+    text-align: left;
+}
+
+.Card_card-title {
+    padding-bottom: 5px;
+    font-size: 18px;
+}
+
+.Card_card-description {
+    color: var(--unaccented_text_color);
+}
+
+.Card_type-list {
+    padding: 7px;
+}
+
+.Card_list-title {
+    color: var(--text_color);
+    font-size: var(--font-size-mt);
+    padding: 5px 0;
+}
+
+.Card_list-items {
+
+}
+
+.Card_list-item {
+    display: flex;
+    gap: 7px;
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.Card_list-item.clicable {
+    cursor: pointer;
+}
+
+.Card_list-item.clicable:hover {
+    background-color: var(--unaccented_hover_bg);
+}
+
+.Card_list-item.clicable:active {
+    background-color: var(--unaccented_active_bg);
+}
+
+.Card_list-item-image {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+}
+
+.Card_list-item-description {
+    font-size: var(--font-size-s);
+    color: var(--unaccented_text_color);
+}
+
+.Card_list-footer {
+    border-top: var(--border_color) 1px solid;
+    font-size: var(--font-size-m);
+    padding: 5px 0 0 0;
+    cursor: pointer;
+    color: #0260E8;
+}
+
+.Card_list-footer:hover {
+    color: #0351C1
+}
+
+.Card_list-footer:active {
+    color: #0043A4;
+}

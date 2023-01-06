@@ -1,4 +1,4 @@
-.PanelButton {
+.UChat {
   position: absolute;
   bottom: 25px;
   right: 25px;
@@ -9,9 +9,9 @@
   transition: width 1s, height 1s, border-radius 1s;
 }
 
-.PanelButton_visible {
-  width: 260px;
-  height: 410px;
+.UChat_visible {
+  width: var(--panel_width);
+  height: var(--panel_height);
   border-radius: 12px 12px 6px 6px;
   padding: 5px;
 }

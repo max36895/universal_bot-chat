@@ -1,14 +1,18 @@
 import "./button.css";
 import React from "react";
 
+export type TButtonSize = 's' | 'm' | 'l';
+export type TButtonViewMode = 'filled' | 'outlined';
+export type TButtonStyle = 'primary' | 'secondary';
+
 interface IButtonProps {
-  fontSize?: "s" | "m" | "l";
+  fontSize?: TButtonSize;
   readOnly?: boolean;
-  size?: "s" | "m" | "l";
-  style?: "primary" | "secondary";
-  viewMode?: "filled" | "outlined";
+  size?: TButtonSize;
+  style?: TButtonStyle;
+  viewMode?: TButtonViewMode;
   captionPosition?: "start" | "end";
-  icon?: string;
+  icon?: string | React.ReactElement;
   caption?: string;
   className?: string;
   title?: string;
@@ -37,14 +41,22 @@ export default function Button(props: IButtonProps) {
   } Button_font-size-${fontSize} Button_style-${style} Button_mode-${viewMode} ${
     props.className || ""
   }`;
+
   let content;
   if (props.children) {
     content = props.children;
   } else {
     let icon = null;
     if (props.icon) {
-      icon = <i className={`Button_icon ${props.icon}`} />;
+      if (typeof props.icon !== 'string' && React.isValidElement(props.icon as React.ReactElement)) {
+        icon = React.cloneElement(props.icon as React.ReactElement, {
+          className: `${props.icon.props.className} Button_icon_size-${size}`
+        })
+      } else {
+        icon = <i className={`Button_icon ${props.icon}`} />;
+      }
     }
+
     let caption = null;
     if (props.caption) {
       const paddingClass = icon
@@ -58,6 +70,7 @@ export default function Button(props: IButtonProps) {
         </span>
       );
     }
+
     content = (
       <>
         {icon}

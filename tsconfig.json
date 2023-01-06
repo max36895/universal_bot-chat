@@ -1,15 +1,25 @@
 {
-    "include": [
-        "./src/**/*"
+  "include": [
+    "./src/**/*"
+  ],
+  "compilerOptions": {
+    "strict": false,
+    "esModuleInterop": true,
+    "target": "es2020",
+    "lib": [
+      "dom",
+      "es2020"
     ],
-    "compilerOptions": {
-        "strict": true,
-        "esModuleInterop": true,
-        "target": "es2020",
-        "lib": [
-            "dom",
-            "es2020"
-        ],
-        "jsx": "react-jsx"
-    }
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
+  }
 }

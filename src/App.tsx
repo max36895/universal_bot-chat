@@ -1,21 +1,12 @@
 import "./styles.css";
-import Button from "./components/Button";
-import Panel from "./components/Panel";
-import PanelButton from "./components/PanelButton";
+import UChat from "./components/UChat";
 
 export default function App() {
-  const onClick = (value: string) => {
-    console.log(value);
-  };
-  /*return (
-    <div className="App">
-      <Button viewMode="filled" caption="" icon="icon_smile" />
-      <Panel caption="test" onSend={onClick} />
-    </div>
-  );*/
   return (
     <div className="App">
-      <PanelButton />
+      <UChat botUrl="https://www.islandgift.ru/yandex/endpoint/6c79447e-0013-437f-a4cd-277ec5583fd9/snowball/index"
+        isVoiceControl={true}
+        panelTitle="Игра в снежки"/>
     </div>
   );
 }

@@ -1,6 +1,22 @@
+:root {
+  --panel_width: 350px;
+  --panel_height: 500px;
+  --panel_header_bg: #002D6D;
+  --text_color: #333;
+  --contrast_text_color: #fff;
+  --unaccented_text_color: #aaa;
+  --font-size-s: 10px;
+  --font-size-m: 14px;
+  --font-size-mt: 18px;
+  --font-size-l: 20px;
+  --unaccented_bg: #F2F4F6;
+  --unaccented_hover_bg: #F1F6FB;
+  --unaccented_active_bg: #EFF8FF;
+  --border_color: #8C8C8C;
+}
+
 .App {
   font-family: sans-serif;
-  text-align: center;
 }
 
 .padding-top-s {
@@ -17,6 +33,10 @@
 
 .margin-top-m {
   margin-top: 4px;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
 }
 
 .icon_smile::before {

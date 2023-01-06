@@ -27,27 +27,14 @@ export default class Request {
   public static readonly HEADER_FORM_DATA: Record<string, string> = {
     "Content-Type": "multipart/form-data"
   };
-  public static readonly HEADER_RSS_XML: Record<string, string> = {
-    "Content-Type": "application/rss+xml"
-  };
   public static readonly HEADER_AP_JSON: Record<string, string> = {
     "Content-Type": "application/json"
-  };
-  public static readonly HEADER_AP_XML: Record<string, string> = {
-    "Content-Type": "application/xml"
-  };
-  public static readonly HEADER_GZIP: Record<string, string> = {
-    "Content-Encoding": "gzip"
   };
 
   /**
    * Адрес, на который отправляется запрос.
    */
   public url: string | null;
-  /**
-   * Get параметры запроса.
-   */
-  public get: unknown | null;
   /**
    * Post параметры запроса.
    */
@@ -56,23 +43,6 @@ export default class Request {
    * Отправляемые заголовки.
    */
   public header: HeadersInit | null;
-  /**
-   * Прикреплённый файл (url, путь к файлу на сервере либо содержимое файла).
-   */
-  public attach: string | null;
-  /**
-   * Тип передаваемого файла.
-   * True, если передается содержимое файла, иначе false. По умолчанию: false.
-   */
-  public isAttachContent: boolean;
-  /**
-   * Название параметра при отправке файла (По умолчанию file).
-   */
-  public attachName: string;
-  /**
-   * Кастомный (Пользовательский) заголовок (DELETE и тд.).
-   */
-  public customRequest: string | null;
   /**
    * Максимально время, за которое должен быть получен ответ. В мсек.
    */
@@ -93,13 +63,8 @@ export default class Request {
    */
   public constructor() {
     this.url = null;
-    this.get = null;
     this.post = null;
     this.header = null;
-    this.attach = null;
-    this.isAttachContent = false;
-    this.attachName = "file";
-    this.customRequest = null;
     this.maxTimeQuery = null;
     this.isConvertJson = true;
     this._error = null;
@@ -131,20 +96,6 @@ export default class Request {
   }
 
   /**
-   * Получение url адреса с get запросом.
-   *
-   * @return string
-   * @private
-   */
-  protected _getUrl(): string {
-    let url: string = this.url || "";
-    if (this.get) {
-      url += "?" + this.get;
-    }
-    return url;
-  }
-
-  /**
    * Начинаем отправку fetch запроса.
    * В случае успеха возвращаем содержимое запроса, в противном случае null.
    *
@@ -152,7 +103,7 @@ export default class Request {
    */
   private async _run<T>(): Promise<T | string | null> {
     if (this.url) {
-      const response = await fetch(this._getUrl(), this._getOptions());
+      const response = await fetch(this.url, this._getOptions());
       if (response.ok) {
         if (this.isConvertJson) {
           return await response.json();
@@ -181,30 +132,16 @@ export default class Request {
       options.signal = signal;
     }
 
-    let post: object | null = null;
     if (this.post) {
-      post = { ...this.post };
-    }
-    if (post) {
       options.method = "POST";
-      options.body = JSON.stringify(post);
+      options.body = JSON.stringify(this.post);
     }
 
     if (this.header) {
       options.headers = this.header;
     }
-
-    if (this.customRequest) {
-      options.method = this.customRequest;
-    }
     return options;
   }
-
-  /**
-   * Получение содержимого файла, пригодного для отправки в запросе
-   * @param {string} filePath Расположение файла
-   * @param {string} fileName Имя файла
-   */
 
   /**
    * Возвращает текст с ошибкой, произошедшей при выполнении запроса.

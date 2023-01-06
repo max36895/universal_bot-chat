@@ -1,5 +1,7 @@
-const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
-const SpeechGrammarList = window.SpeechGrammarList || webkitSpeechGrammarList;
+// @ts-ignore
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+// @ts-ignore
+const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
 
 interface IPromiseRes {
   resolve: (value: unknown) => void;
@@ -7,25 +9,33 @@ interface IPromiseRes {
 }
 
 export default class Voice {
+  // @ts-ignore
   private _recognizer: SpeechRecognition;
+  // @ts-ignore
   private _synth: speechSynthesis;
   private _speechUtterance: SpeechSynthesisUtterance;
   private _speechPromise: IPromiseRes | null;
-  private _watchSpeak: (value: string) => void;
+  private _watchSpeak: ((value: string) => void) | undefined;
 
   constructor() {
     this._speechPromise = null;
-    this._recognizer = new SpeechRecognition();
+    if (SpeechRecognition) {
+      this._recognizer = new SpeechRecognition();
+    } else {
+      return;
+    }
 
-    const speechRecognitionList = new SpeechGrammarList();
+    if (SpeechGrammarList) {
+      const speechRecognitionList = new SpeechGrammarList();
+      this._recognizer.grammars = speechRecognitionList;
+    }
+
     // Ставим опцию, чтобы распознавание началось ещё до того, как пользователь закончит говорить
     this._recognizer.interimResults = true;
     this._recognizer.lang = "ru-Ru";
-    this._recognizer.grammars = speechRecognitionList;
     this._recognizer.maxAlternatives = 1;
 
-    // Используем колбек для обработки результатов
-    this._recognizer.onresult = (event) => {
+    this._recognizer.onresult = (event: any) => {
       var result = event.results[event.resultIndex];
       if (result.isFinal) {
         if (this._speechPromise) {
@@ -49,11 +59,22 @@ export default class Voice {
     this._synth = speechSynthesis;
     this._speechUtterance = new SpeechSynthesisUtterance("");
     const voices = this._synth.getVoices();
-    this._speechUtterance.voice = voices[0];
+    let index = 0;
+    for (let i = 0; i < voices.length; i++) {
+      if (voices[i].lang === 'ru-RU') {
+        index = i;
+        break;
+      }
+    }
+    this._speechUtterance.voice = voices[index];
   }
 
   setWatchSpeak(watchSpeak: (value: string) => void): void {
     this._watchSpeak = watchSpeak;
+  }
+
+  isSpeak(): boolean {
+    return this._synth.speaking;
   }
 
   speak(say: string): void {
@@ -64,16 +85,16 @@ export default class Voice {
     this._synth.speak(this._speechUtterance);
   }
 
-  isSpeak(): boolean {
-    return this._synth.speaking;
-  }
-
   speakPause(): void {
     this._synth.pause();
   }
 
   speakStop(): void {
     this._synth.cancel();
+  }
+
+  isSpeach(): boolean {
+    return this._speechPromise !== null;
   }
 
   speech(): Promise<unknown> {
@@ -85,6 +106,7 @@ export default class Voice {
     }
     this._recognizer.stop();
     this._recognizer.start();
+    
     return new Promise((resolve, reject) => {
       this._speechPromise = {
         resolve,
@@ -92,9 +114,7 @@ export default class Voice {
       };
     });
   }
-  isSpeach(): boolean {
-    return this._speechPromise !== null;
-  }
+
   speechStop(): void {
     this._speechPromise = null;
     this._recognizer.stop();

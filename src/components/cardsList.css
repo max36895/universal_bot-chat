@@ -1,0 +1,39 @@
+.CardsList {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  padding-bottom: 30px;
+}
+
+.CardsList_wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 1px;
+  overflow-y: scroll;
+}
+
+.is-windows .CardsList_wrapper {
+  margin-right: -13px;
+}
+
+.CardsList_buttons-block {
+  position: absolute;
+  right: 6px;
+  left: 0;
+  max-width: 100%;
+  padding: 0 5px;
+}
+
+.CardsList_buttons-block_wrapper {
+  overflow-x: scroll;
+  display: flex;
+  gap: 6px;
+  padding-top: 3px;
+  padding-bottom: 9px;
+  width: 100%;
+}
+
+.is-windows .CardsList_buttons-block_wrapper {
+  margin-bottom: -13px;
+}

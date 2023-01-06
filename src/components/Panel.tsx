@@ -18,13 +18,14 @@ export default function Panel(props: IPanelProps) {
           className="Panel_header_close"
           onClick={() => {
             props.onClose?.();
-          }}
-        >
-          ✖
+          }}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 25 25" fill="none">
+            <path d="M18 7L7 18M7 7L18 18" stroke="#fff" stroke-width="1.2"/>
+          </svg>
         </i>
       </div>
       <div className="Panel_content">{props.children}</div>
-      <div className="Panel_footer">{props.footerTemplate}</div>
+      {props.footerTemplate && (<div className="Panel_footer">{props.footerTemplate}</div>)}
     </div>
   );
 }
