@@ -4,14 +4,15 @@
 }
 
 .Card {
-    border-radius: 7px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    margin: 5px;
+    border-radius: var(--border-radius-m);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    margin: var(--padding-st);
     position: relative;
     max-width: 250px;
     width: 250px;
     overflow: hidden;
     flex-shrink: 0;
+    background-color: var(--bg);
 }
 
 .Card_image {
@@ -25,36 +26,35 @@
     margin: 0;
     font-size: var(--font-size-m);
     color: var(--text_color);
+    white-space: pre-line;
 }
 
-.Card_type-text {
-    padding: 7px 5px;
-}
-
-.Card_type-text.clicable {
-    cursor: pointer;
-}
-
-.Card_type-text.clicable:hover {
-    background-color: var(--unaccented_hover_bg);
-}
-
-
-.Card_type-text.clicable:active {
-    background-color: var(--unaccented_active_bg);
+.Card_type-text,
+.Card_type-error {
+    padding: var(--padding-m) var(--padding-st);
 }
 
 .Card_style-user {
-    background-color: var(--user_bg);
+    background-color: var(--user_msg_bg);
     color: var(--text_color);
     text-align: right;
     align-self: end;
+    border-bottom-right-radius: var(--border-radius-xs);
 }
 
 .Card_style-bot {
-    background-color: var(--bot_bg);
+    background-color: var(--bot_msg_bg);
     color: var(--contrast_text_color);
     text-align: left;
+    border-bottom-left-radius: var(--border-radius-xs);
+}
+
+.Card.Card_type-error {
+    background: var(--danger_bg);
+}
+
+.Card_type-error .Card_text-title{
+    color: var(--contrast_text_color);
 }
 
 .Card_style-bot .Card_text-title {
@@ -63,19 +63,31 @@
   
 .Card_style-bot .Card_text-date {
     left: unset;
-    right: 4px;
+    right: var(--padding-s);
 }
 
 .Card_text-date {
   color: var(--unaccented_text_color);
-  font-size: 10px;
+  font-size: var(--font-size-s);
   position: absolute;
   bottom: 1px;
-  left: 4px;
+  left: var(--padding-s);
 }
 
 .Card_type-card {
     padding: 0;
+}
+
+.Card_type-card.clicable {
+    cursor: pointer;
+}
+
+.Card_type-card.clicable:hover {
+    background-color: var(--unaccented_hover_bg);
+}
+
+.Card_type-card.clicable:active {
+    background-color: var(--unaccented_active_bg);
 }
 
 .Card_big-image {
@@ -86,13 +98,13 @@
 }
 
 .Card_card-info {
-    padding: 7px;
+    padding: var(--padding-m);
     text-align: left;
 }
 
 .Card_card-title {
-    padding-bottom: 5px;
-    font-size: 18px;
+    padding-bottom: var(--padding-st);
+    font-size: var(--font-size-mt);
 }
 
 .Card_card-description {
@@ -100,21 +112,21 @@
 }
 
 .Card_type-list {
-    padding: 7px;
+    padding: var(--padding-m);
 }
 
 .Card_list-title {
     color: var(--text_color);
     font-size: var(--font-size-mt);
-    padding: 5px 0;
+    padding: var(--padding-s) 0;
 }
 
 .Card_list-item {
     display: flex;
-    gap: 7px;
-    padding: 5px;
-    margin: 5px 0;
-    border-radius: 5px;
+    gap: var(--padding-st);
+    padding: var(--padding-st);
+    margin: var(--padding-st) 0;
+    border-radius: var(--border-radius-m);
 }
 
 .Card_list-item.clicable {
@@ -143,15 +155,15 @@
 .Card_list-footer {
     border-top: var(--border_color) 1px solid;
     font-size: var(--font-size-m);
-    padding: 5px 0 0 0;
+    padding: var(--padding-st) 0 0 0;
     cursor: pointer;
-    color: #0260E8;
+    color: var(--link_text_color);
 }
 
 .Card_list-footer:hover {
-    color: #0351C1
+    color: var(--link_hover_text_color)
 }
 
 .Card_list-footer:active {
-    color: #0043A4;
+    color: var(--link_active_text_color);
 }

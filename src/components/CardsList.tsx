@@ -5,19 +5,30 @@ import {ICardButton, ICards} from "../interfaces/ICards";
 import "./cardsList.css";
 
 interface ICardsListrops {
+  /**
+   * Массив карточек
+   */
   cards?: ICards[];
+  /**
+   * Событие обработки действия
+   * @param value 
+   * @returns 
+   */
   onSend?: (value: ICardButton) => void;
 }
 
-export default function CardsList(props: ICardsListrops) {
+/**
+ * Компонент список карточек
+ * @param props 
+ * @returns React.ReactElement
+ */
+export default function CardsList(props: ICardsListrops): React.ReactElement {
   const scrollRef = React.useRef<HTMLDivElement>();
   const { cards = [] } = props;
   let buttons: ICardButton[];
   if (cards.length) {
     buttons = cards[cards.length - 1].buttons;
   }
-
-  const isWindows = navigator.userAgent.match(/Windows/g);
 
   React.useEffect(() => {
     const el = scrollRef.current as HTMLDivElement;
@@ -26,11 +37,11 @@ export default function CardsList(props: ICardsListrops) {
   }, [props.cards]);
 
   return (
-    <div className={`CardsList ${isWindows ? 'is-windows' : ''}`}>
+    <div className="CardsList">
       <div className="CardsList_wrapper" ref={scrollRef}>
-        {cards.map((card, index) => {
+        {cards.map((card) => {
           return (
-            <Card key={index} 
+            <Card key={card.messageId} 
               text={card.text} 
               date={card.date} 
               style={card.isBot ? 'bot' : 'user'}

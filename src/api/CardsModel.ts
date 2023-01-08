@@ -1,38 +1,111 @@
 import {ICardButton, ICards, IImage, IList, TCardType} from "../interfaces/ICards";
 import Request, { IRequestSend } from "./Request";
 
+/**
+ * Интерфес кнопки.
+ * Кнопки позволяют выполнять определенные действия. Если указан url, то будет открыта ссылка, иначе будет отправлен запрос на сервер с текстом.
+ */
 interface IButton {
+  /**
+   * Текст кнопки
+   */
   title: string;
+  /**
+   * Текст кнопки. Передается в карточку
+   */
   text?: string;
+  /**
+   * Режим отобрадения кнопки. Для отобрадения кнопки нужно передать true
+   */
   hide: boolean;
+  /**
+   * Ссылка на страницу, на котрую нужно осуществить переход при нажатии на кнопку.
+   */
   url?: string;
 }
 
 interface IItem {
+  /**
+   * Заголовок
+   */
   title?: string;
+  /**
+   * Описание
+   */
   description?: string;
+  /**
+   * Идентификатор картинки
+   */
   image_id?: string;
+  /**
+   * Кнопка
+   */
   button?: IButton;
 }
 
 export interface ICardsModelResponse {
   response: {
+    /**
+     * Отображаемый текст
+     */
     text: string;
+    /**
+     * Текст который будет озвучен
+     */
     tts: string;
+    /**
+     * Кнопки отображаемые для более удобной навигации
+     */
     buttons: IButton[];
+    /**
+     * Даннве для отображения карточки
+     */
     card?: {
+      /**
+       * Режим отображения карточки. Картинка(BigImage) или список(ItemsList)
+       */
       type: 'BigImage' | 'ItemsList';
+      /**
+       * Идентификатор картинки. Нужно указывать если установлен режим BigImage
+       */
       image_id?: string;
+      /**
+       * Заголовок карточки. Нужно указывать если установлен режим BigImage
+       */
       title?: string;
+      /**
+       * Описание карточки. Нужно указывать если установлен режим BigImage
+       */
       description?: string;
+      /**
+       * Кнопка карточки. Нужно указывать если установлен режим BigImage
+       */
       button?: IButton;
 
+      /**
+       * Данные для заголовка списка. Нужно указывать если установлен режим ItemsList
+       */
       header?: {
+        /**
+         * Текст заголовка списка
+         */
         text: string;
       }
+      /**
+       * Список отображаемых элементов. Нужно указывать если установлен режим ItemsList
+       */
       items?: IItem[];
+      /**
+       * Содержимое, отображаемое в самом низу списка. Нужно указывать если установлен режим ItemsList
+       */
       footer?: {
+        /**
+         * Отображаемый текст
+         */
         text: string;
+        /**
+         * Кнопка
+         */
         button: IButton;
       } 
     }
@@ -40,12 +113,31 @@ export interface ICardsModelResponse {
 };
 
 export interface IRequestParser {
+  /**
+   * Возвращает данные для отправки запроса на сервер
+   * @param value Значение введенное пользователем
+   * @param messageId Порядковый номер отправленного полльзователем сообщения
+   * @param user_id Идентификатор пользователя
+   * @returns 
+   */
   sendRequest: (value: string, messageId: number, user_id?: string) => object;
+  /**
+   * Обработка полученного результата с сервера, для приведения его к корректному для работы виду
+   * @param res 
+   * @returns 
+   */
   parsePesponse: (res: unknown) => ICardsModelResponse;
+  /**
+   * Метод для получения ссылки на изображение
+   * @param imageId 
+   * @param size 
+   * @returns 
+   */
   getImage: (imageId: string, size?: string) => string;
 };
 
 interface ITextConfig {
+  messageId: number;
   text: string;
   image?: IImage;
   list?: IList;
@@ -54,7 +146,7 @@ interface ITextConfig {
   buttons?: ICardButton[];
 }
 
-let count = 0;
+let userMsgCount = 1;
 
 export default class CardsModel {
   protected _req: Request;
@@ -91,6 +183,10 @@ export default class CardsModel {
     this._botUrl = url;
   }
 
+  setMessageId(messageId: number): void {
+    userMsgCount = messageId;
+  }
+
   private getDefaultSend(value: string, messageId: number, userId: string = 'test'): object {
     return {
       meta: {
@@ -104,11 +200,11 @@ export default class CardsModel {
         }
       },
       session: {
-        message_id: messageId,
+        message_id: messageId - 1,
         session_id: "web-site",
         skill_id: "web-site_id",
         user_id: userId,
-        new: messageId === 0
+        new: messageId === 1
       },
       request: {
         command: value.toLowerCase(),
@@ -127,14 +223,9 @@ export default class CardsModel {
     if (!this._botUrl) {
       return Promise.reject('Please added bot url address');
     }
-    this._req.post = this._parser.sendRequest(value, count, this._userId);
-    count++;
+    this._req.post = this._parser.sendRequest(value, userMsgCount, this._userId);
+    userMsgCount++;
     return this._req.send<ICardsModelResponse>(this._botUrl);
-  }
-
-  private _getDate(): string {
-    const date = new Date();
-    return `${date.getHours()}:${(date.getMinutes() < 10 ? '0' : '')}${date.getMinutes()}`;
   }
 
   private _getImage(token: string, size: string = 'one-x3'): string {
@@ -156,7 +247,8 @@ export default class CardsModel {
   private _addCard(cards: ICards[], config: ITextConfig): ICards[] {
     cards.push({
       text: config.text.trim(),
-      date: this._getDate(),
+      date: Date.now(),
+      messageId: config.messageId,
       isBot: config.isBot || false,
       cardType: config.type || 'text',
       image: config.image,
@@ -167,7 +259,7 @@ export default class CardsModel {
   }
 
   addUserText(cards: ICards[], value: string): ICards[] {
-    return [...this._addCard(cards, { text: value })];
+    return [...this._addCard(cards, { text: value, messageId: (userMsgCount * 2 - 1) })];
   }
 
   addBotText(
@@ -190,7 +282,7 @@ export default class CardsModel {
           });
         }
         const text = res.text || "";
-        const config: ITextConfig = { text, isBot: true, buttons };
+        const config: ITextConfig = { text, isBot: true, buttons, messageId: ((userMsgCount - 1) * 2) };
         if (res.card) {
           if (res.card.type === 'BigImage') {
             config.type = 'card';
@@ -230,7 +322,12 @@ export default class CardsModel {
         return [...this._addCard(cards, config)];
       }
     }
-    return cards;
+    const config: ITextConfig = {
+      type: 'error',
+      text: 'Произошла ошибка!\n' + response.err,
+      messageId: (userMsgCount - 1) * 2
+    };
+    return [...this._addCard(cards, config)];
   }
 
   getTTS(response: IRequestSend<ICardsModelResponse>): string {

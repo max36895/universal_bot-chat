@@ -1,0 +1,34 @@
+.Popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    animation: PopupVisible 0.3s;
+}
+
+.is-mobile .Popup {
+    top: 0;
+    animation: MobilePopupVisible 0.7s;
+}
+
+@keyframes PopupVisible {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes MobilePopupVisible {
+    0% {
+        top: 100vh;
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        top: 0;
+    }
+}

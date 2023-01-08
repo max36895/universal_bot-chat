@@ -4,7 +4,15 @@ import Voice from "../api/Voice";
 import "./inputBlock.css";
 
 interface IInputBlockProps {
+  /**
+   * Режим голосового управления
+   */
   isVoiceControl?: boolean;
+  /**
+   * Событие обработки ввода
+   * @param value 
+   * @returns 
+   */
   onSend?: (value: string) => void;
 }
 
@@ -17,7 +25,12 @@ const ICON_LISTEN = <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBo
   <path fill="#333333" d="M11,6v20H9V6H11z M26,8h-2v16h2V8z M32,14h-2v4h2V14z M8,10H6v12h2V10z M5,12H3v8h2V12z M2,14H0v4  h2V14z M14,3h-2v26h2V3z M17,6h-2v20h2V6z M20,2h-2v28h2V2z M23,5h-2v22h2V5z M29,11h-2v10h2V11z"/>
 </svg>
 
-export default function InputBlock(props: IInputBlockProps) {
+/**
+ * Компонент пользовательского ввода. Включает в себя как привычное поле ввода, так и возможность ввода через голос.
+ * @param props 
+ * @returns 
+ */
+export default function InputBlock(props: IInputBlockProps): React.ReactElement {
   const inputRef = React.useRef<HTMLTextAreaElement>();
   const [voice] = React.useState(new Voice());
   const [voiceIcon, setVoiceIcon] = React.useState(ICON_VOICE);

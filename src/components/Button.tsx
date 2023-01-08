@@ -6,21 +6,67 @@ export type TButtonViewMode = 'filled' | 'outlined';
 export type TButtonStyle = 'primary' | 'secondary';
 
 interface IButtonProps {
+  /**
+   * Размер текста в кнопке
+   * @default m
+   */
   fontSize?: TButtonSize;
   readOnly?: boolean;
+  /**
+   * Размер кнопки
+   * @default m
+   */
   size?: TButtonSize;
+  /**
+   * Cтиль кнопки
+   * @default primary
+   */
   style?: TButtonStyle;
+  /**
+   * Режим отображения кнопки
+   * @default outlined
+   */
   viewMode?: TButtonViewMode;
+  /**
+   * Расположение текста в кнопке
+   * @default end
+   */
   captionPosition?: "start" | "end";
+  /**
+   * Иконка кнопки
+   */
   icon?: string | React.ReactElement;
+  /**
+   * Текст внутри кнопки
+   */
   caption?: string;
+  /**
+   * Класс, который будет навешен на кнопку
+   */
   className?: string;
+  /**
+   * Текст, который будет отображен при наведении на кнопку
+   */
   title?: string;
+  /**
+   * Содержимое, которое будет отображено в кнопке
+   */
   children?: React.ReactElement;
+  forwardedRef?: React.LegacyRef<HTMLButtonElement>;
+  /**
+   * Событие клика
+   * @param e 
+   * @returns 
+   */
   onClick?: (e?: React.MouseEvent) => void;
 }
 
-export default function Button(props: IButtonProps) {
+/**
+ * Компонент кнопка
+ * @param props 
+ * @returns React.ReactElement
+ */
+export default function Button(props: IButtonProps): React.ReactElement {
   const {
     size = "m",
     fontSize = "m",
@@ -80,7 +126,7 @@ export default function Button(props: IButtonProps) {
   }
 
   return (
-    <button title={props.title} className={className} onClick={onClickHandler}>
+    <button ref={props.forwardedRef} title={props.title} className={className} onClick={onClickHandler}>
       {content}
     </button>
   );

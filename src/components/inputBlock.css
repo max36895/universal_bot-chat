@@ -5,16 +5,16 @@
 .InputBlock_textarea {
   outline: none;
   border: 0px;
-  border-bottom: 1px solid #ebeced;
+  border-bottom: 1px solid var(--unaccented_border_color);
   height: 50px;
-  font-size: 14px;
-  margin-right: 6px;
+  font-size: var(--font-size-m);
+  margin-right: var(--padding-st);
   resize: none;
   flex-grow: 1;
 }
 
 .InputBlock_textarea:focus {
-  border-block-color: #bcbcbc;
+  border-block-color: var(--unaccented_active_border_color);
 }
 
 .InputBlock_buttons {

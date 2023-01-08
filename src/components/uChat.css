@@ -1,17 +1,104 @@
 .UChat {
+  font-family: var(--font-family);
+}
+
+.UChat_absolute {
   position: absolute;
   bottom: 25px;
   right: 25px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  overflow: hidden;
-  transition: width 1s, height 1s, border-radius 1s;
 }
 
-.UChat_visible {
-  width: var(--panel_width);
-  height: var(--panel_height);
-  border-radius: 12px 12px 6px 6px;
-  padding: 5px;
+
+.UMBot_themes-default {
+  --panel_width: inherit;
+  --panel_height: inherit;
+  --panel_header_bg: #002D6D;
+  --panel_header_height: 50px;
+  --text_color: #333;
+  --contrast_text_color: #fff;
+  --unaccented_text_color: #aaa;
+  --link_text_color: #0260E8;
+  --link_hover_text_color: #0351C1;
+  --link_active_text_color: #0043A4;
+  --font-size-s: 10px;
+  --font-size-m: 14px;
+  --font-size-mt: 18px;
+  --font-size-l: 20px;
+  --font-family: sans-serif;
+
+  --padding-s: 4px;
+  --padding-st: 6px;
+  --padding-m: 8px;
+  --padding-mt: 10px;
+  --padding-l: 12px;
+
+  --border-radius-xs: 2px;
+  --border-radius-s: 4px;
+  --border-radius-m: 6px;
+  --border-radius-l: 8px;
+
+  --inline-height-s: 18px;
+  --inline-height-m: 24px;
+  --inline-height-l: 40px;
+
+  --bg: #FFF;
+  --danger_bg: #BC0022;
+  --unaccented_bg: #F2F4F6;
+  --unaccented_hover_bg: #F1F6FB;
+  --unaccented_active_bg: #EFF8FF;
+   --unaccented_border_color: #D4DADE;
+  --unaccented_active_border_color: #BBC9DD;
+  --primary_bg: #f6733c;
+  --primary_hover_bg: #e4662f;
+  --primary_active_bg: #d6551f;
+  --primary_same_hover_bg: #e4662f25;
+  --primary_same_active_bg: #d6551f40;
+  --secondary_bg: #265fa1;
+  --secondary_hover_bg: #2b5688;
+  --secondary_active_bg: #274c77;
+  --secondary_same_hover_bg: #2b568825;
+  --secondary_same_active_bg: #274c7740;
+  --translucent_dark_bg: rgba(255, 255, 255, .15);
+  --translucent_hover_dark_bg: rgba(255, 255, 255, .25);
+  --translucent_active_dark_bg: rgba(255, 255, 255, .35);
+  --border_color: #8C8C8C;
+
+  --user_msg_bg: #E5F0FF;
+  --bot_msg_bg: #580BE4;
+}
+
+.padding-top-s {
+  padding-top: 2px;
+}
+
+.padding-top-m {
+  padding-top: 4px;
+}
+
+.margin-top-s {
+  margin-top: 2px;
+}
+
+.margin-top-m {
+  margin-top: 4px;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.icon_smile::before {
+  content: "😐";
+}
+.icon-send::before {
+  content: "💬";
+}
+.icon-info::before {
+  content: "❓";
+}
+.icon-voice::before {
+  content: "🎤";
+}
+.icon-sound::before {
+  content: "🔊";
 }

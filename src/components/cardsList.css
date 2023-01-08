@@ -2,7 +2,8 @@
   position: relative;
   height: 100%;
   overflow: hidden;
-  padding-bottom: 30px;
+  padding-bottom: calc(var(--inline-height-m) + var(--padding-m));
+  --shadow: 0 0 var(--padding-s) var(--padding-st) var(--bg);
 }
 
 .CardsList_wrapper {
@@ -13,25 +14,67 @@
   overflow-y: scroll;
 }
 
+.CardsList_wrapper::before,
+.CardsList_wrapper::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 0px;
+  z-index: 1;
+  box-shadow: var(--shadow);
+}
+
+.CardsList_wrapper::before {
+  top: 0;
+}
+
+.CardsList_wrapper::after {
+  bottom: 0;
+}
+
 .is-windows .CardsList_wrapper {
   margin-right: -13px;
 }
 
 .CardsList_buttons-block {
   position: absolute;
-  right: 6px;
+  right: 0;
   left: 0;
   max-width: 100%;
-  padding: 0 5px;
+  background-color: var(--bg);
+  box-shadow: var(--shadow);
+  z-index: 1;
+}
+
+.CardsList_buttons-block::before,
+.CardsList_buttons-block::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 100%;
+  box-shadow: var(--shadow);
+  width: 0px;
+}
+
+.CardsList_buttons-block::before {
+  left: 0;
+}
+
+.CardsList_buttons-block::after {
+  right: 0;
 }
 
 .CardsList_buttons-block_wrapper {
   overflow-x: scroll;
   display: flex;
-  gap: 6px;
-  padding-top: 3px;
-  padding-bottom: 9px;
+  gap: var(--padding-st);
+  padding: var(--padding-st);
+  padding-top: var(--padding-s);
+  padding-bottom: var(--padding-mt);
   width: 100%;
+  box-sizing: border-box;
 }
 
 .is-windows .CardsList_buttons-block_wrapper {

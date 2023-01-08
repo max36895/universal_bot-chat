@@ -12,7 +12,7 @@
 }
 
 .Button_mode-outlined {
-  background-color: transparent;
+  background-color: var(--bg);
   border-color: var(--button_border-color);
 }
 
@@ -44,106 +44,106 @@
 }
 
 .Button_style-primary {
-  --button_border-color: #f6733c;
-  --button_hover_border-color: #e4662f;
-  --button_active_border-color: #d6551f;
-  --button_color: #f6733c;
-  --button_hover_color: #e4662f;
-  --button_active_color: #d6551f;
-  --button-same_hover_color: #e4662f25;
-  --button-same_active_color: #d6551f40;
+  --button_border-color: var(--primary_bg);
+  --button_hover_border-color: var(--primary_hover_bg);
+  --button_active_border-color: var(--primary_active_bg);
+  --button_color: var(--primary_bg);
+  --button_hover_color: var(--primary_hover_bg);
+  --button_active_color: var(--primary_active_bg);
+  --button-same_hover_color: var(--primary_same_hover_bg);
+  --button-same_active_color: var(--primary_same_active_bg);
 }
 
 .Button_style-secondary {
-  --button_border-color: #265fa1;
-  --button_hover_border-color: #2b5688;
-  --button_active_border-color: #274c77;
-  --button_color: #265fa1;
-  --button_hover_color: #2b5688;
-  --button_active_color: #274c77;
-  --button-same_hover_color: #2b568825;
-  --button-same_active_color: #274c7740;
+  --button_border-color: var(--secondary_bg);
+  --button_hover_border-color: var(--secondary_hover_bg);
+  --button_active_border-color: var(--secondary_active_bg);
+  --button_color: var(--secondary_bg);
+  --button_hover_color: var(--secondary_hover_bg);
+  --button_active_color: var(--secondary_active_bg);
+  --button-same_hover_color: var(--secondary_same_hover_bg);
+  --button-same_active_color: var(--secondary_same_active_bg);
 }
 
 .Button_size-s {
-  height: 18px;
+  height: var(--inline-height-s);
 }
 
 .Button_size-s-circle {
-  width: 18px;
+  width: var(--inline-height-s);
   justify-content: center;
 }
 
 .Button_icon_size-s {
-  width: 16px;
-  height: 16px;
+  width: calc(var(--inline-height-s) - 2px);
+  height: calc(var(--inline-height-s) - 2px);
 }
 
 .Button_size-s-button {
-  padding: 0 6px;
+  padding: 0 calc(var(--inline-height-s) / 2);
 }
 
 .Button_size-s::before {
   content: "\200b";
-  line-height: 16px;
-}
-
-.Button_size-m {
-  height: 24px;
+  line-height: calc(var(--inline-height-s) - 2px);
 }
 
 .Button_size-s .Button_icon::before {
   font-size: var(--font-size-s);
 }
 
+.Button_size-m {
+  height: var(--inline-height-m);
+}
+
+.Button_size-m-circle {
+  width: var(--inline-height-m);
+  justify-content: center;
+}
+
+.Button_icon_size-m {
+  width: calc(var(--inline-height-m) - 2px);
+  height: calc(var(--inline-height-m) - 2px);
+}
+
+.Button_size-m-button {
+  padding: 0 calc(var(--inline-height-m) / 2);
+}
+
+.Button_size-m::before {
+  content: "\200b";
+  line-height: calc(var(--inline-height-m) - 2px);
+}
+
 .Button_size-m .Button_icon::before {
   font-size: var(--font-size-m);
+}
+
+.Button_size-l {
+  height: var(--inline-height-l);
+}
+
+.Button_size-l-circle {
+  width: var(--inline-height-l);
+  justify-content: center;
+}
+
+.Button_icon_size-l {
+  width: calc(var(--inline-height-l) - 2px);
+  height: calc(var(--inline-height-l) - 2px);
+}
+
+.Button_size-l-button {
+  padding: 0 calc(var(--inline-height-l) / 2px);
 }
 
 .Button_size-l .Button_icon::before {
   font-size: var(--font-size-l);
 }
 
-.Button_size-m-circle {
-  width: 24px;
-  justify-content: center;
-}
-
-.Button_icon_size-m {
-  width: 22px;
-  height: 22px;
-}
-
-.Button_size-m-button {
-  padding: 0 12px;
-}
-
-.Button_size-m::before {
-  content: "\200b";
-  line-height: 22px;
-}
-
-.Button_size-l {
-  height: 40px;
-}
-
-.Button_size-l-circle {
-  width: 40px;
-  justify-content: center;
-}
-
-.Button_icon_size-l {
-  width: 38px;
-  height: 38px;
-}
-
-.Button_size-l-button {
-  padding: 0 20px;
-}
-
 .Button_size-l::before {
   content: "\200b";
-  line-height: 38px;
+  line-height: calc(var(--inline-height-l) - 2px);
 }
 
 .Button_font-size-s {
@@ -175,9 +175,9 @@
 }
 
 .Button_caption-padding-start {
-  padding-right: 4px;
+  padding-right: var(--padding-s);
 }
 
 .Button_caption-padding-end {
-  padding-left: 4px;
+  padding-left: var(--padding-s);
 }

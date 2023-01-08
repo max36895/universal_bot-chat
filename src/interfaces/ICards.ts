@@ -21,11 +21,12 @@ export interface IList {
   footer?: IFooter;
 }
 
-export type TCardType = 'text' | 'card' | 'list';
+export type TCardType = 'text' | 'card' | 'list' | 'error';
 
 export interface ICards {
+  messageId: number;
   text: string;
-  date: string;
+  date: number;
   cardType?: TCardType;
   image?: IImage;
   list?: IList;
