@@ -26,10 +26,6 @@ interface IPopupProps {
     target?: HTMLElement;
 }
 
-interface IUseMountProps {
-    opener: boolean;
-}
-
 function getPosition(props: IPopupProps): CSSProperties {
     const positionStyle: CSSProperties = {};
     if (detection.isMobile) {
@@ -48,12 +44,14 @@ function getPosition(props: IPopupProps): CSSProperties {
                 height: window.innerHeight
             };
         }
-        positionStyle.width = Math.min(props.width, viewport.width) + 'px';
-        positionStyle.height = Math.min(props.height, viewport.height) + 'px';
+        const width = Math.min(props.width, viewport.width);
+        const height = Math.min(props.height, viewport.height);
+        positionStyle.width = width + 'px';
+        positionStyle.height = height + 'px';
         if (props.target) {
             const clientRect = props.target.getBoundingClientRect();
-            positionStyle.top = clientRect.bottom - props.height > 0 ? (clientRect.bottom - props.height) : (clientRect.top);
-            positionStyle.left = clientRect.right - props.width > 0 ? (clientRect.right - props.width) : (clientRect.left);
+            positionStyle.top = clientRect.bottom - height > 0 ? (clientRect.bottom - height) : (clientRect.top);
+            positionStyle.left = clientRect.right - width > 0 ? (clientRect.right - width) : (clientRect.left);
         } else {
             positionStyle.top = (viewport.width - props.width) / 2;
             positionStyle.left = (viewport.height - props.height) / 2;
