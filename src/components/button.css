@@ -1,183 +1,203 @@
 .Button {
-  border-width: 1px;
-  border-style: solid;
-  display: flex;
-  align-items: baseline;
-  padding: 0;
-  border-radius: 100px;
+    border-width: 1px;
+    border-style: solid;
+    display: flex;
+    align-items: baseline;
+    padding: 0;
+    border-radius: 100px;
+}
+
+.Button.clickable {
+    cursor: pointer;
 }
 
 .Button:focus-visible {
-  outline: 0px;
+    outline: 0;
 }
 
 .Button_mode-outlined {
-  background-color: var(--bg);
-  border-color: var(--button_border-color);
+    background-color: var(--bg);
+    border-color: var(--button_border-color);
 }
 
 .Button_mode-outlined:focus-visible,
-.Button_mode-outlined:hover {
-  border-color: var(--button_hover_border-color);
-  background-color: var(--button-same_hover_color);
+.is-hovered .Button_mode-outlined:hover {
+    border-color: var(--button_hover_border-color);
+    background-color: var(--button-same_hover_color);
 }
 
 .Button_mode-outlined:active {
-  border-color: var(--button_active_border-color);
-  background-color: var(--button-same_active_color);
+    border-color: var(--button_active_border-color);
+    background-color: var(--button-same_active_color);
 }
 
 .Button_mode-filled {
-  background-color: var(--button_color);
-  border-color: var(--button_border-color);
+    background-color: var(--button_color);
+    border-color: var(--button_border-color);
 }
 
 .Button_mode-filled:focus-visible,
-.Button_mode-filled:hover {
-  border-color: var(--button_hover_border-color);
-  background-color: var(--button_hover_color);
+.is-hovered .Button_mode-filled:hover {
+    border-color: var(--button_hover_border-color);
+    background-color: var(--button_hover_color);
 }
 
 .Button_mode-filled:active {
-  border-color: var(--button_active_border-color);
-  background-color: var(--button_active_color);
+    border-color: var(--button_active_border-color);
+    background-color: var(--button_active_color);
+}
+
+.Button_style-readonly {
+    --button_border-color: var(--unaccented_border_color);
+    --button_hover_border-color: var(--unaccented_border_color);
+    --button_active_border-color: var(--unaccented_border_color);
+    --button_color: var(--unaccented_bg);
+    --button_hover_color: var(--unaccented_bg);
+    --button_active_color: var(--unaccented_bg);
+    --button-same_hover_color: var(--bg);
+    --button-same_active_color: var(--bg);
+    --text_color: var(--unaccented_text_color);
+    cursor: auto;
 }
 
 .Button_style-primary {
-  --button_border-color: var(--primary_bg);
-  --button_hover_border-color: var(--primary_hover_bg);
-  --button_active_border-color: var(--primary_active_bg);
-  --button_color: var(--primary_bg);
-  --button_hover_color: var(--primary_hover_bg);
-  --button_active_color: var(--primary_active_bg);
-  --button-same_hover_color: var(--primary_same_hover_bg);
-  --button-same_active_color: var(--primary_same_active_bg);
+    --button_border-color: var(--primary_bg);
+    --button_hover_border-color: var(--primary_hover_bg);
+    --button_active_border-color: var(--primary_active_bg);
+    --button_color: var(--primary_bg);
+    --button_hover_color: var(--primary_hover_bg);
+    --button_active_color: var(--primary_active_bg);
+    --button-same_hover_color: var(--primary_same_hover_bg);
+    --button-same_active_color: var(--primary_same_active_bg);
 }
 
 .Button_style-secondary {
-  --button_border-color: var(--secondary_bg);
-  --button_hover_border-color: var(--secondary_hover_bg);
-  --button_active_border-color: var(--secondary_active_bg);
-  --button_color: var(--secondary_bg);
-  --button_hover_color: var(--secondary_hover_bg);
-  --button_active_color: var(--secondary_active_bg);
-  --button-same_hover_color: var(--secondary_same_hover_bg);
-  --button-same_active_color: var(--secondary_same_active_bg);
+    --button_border-color: var(--secondary_bg);
+    --button_hover_border-color: var(--secondary_hover_bg);
+    --button_active_border-color: var(--secondary_active_bg);
+    --button_color: var(--secondary_bg);
+    --button_hover_color: var(--secondary_hover_bg);
+    --button_active_color: var(--secondary_active_bg);
+    --button-same_hover_color: var(--secondary_same_hover_bg);
+    --button-same_active_color: var(--secondary_same_active_bg);
 }
 
 .Button_size-s {
-  height: var(--inline-height-s);
+    height: var(--inline-height-s);
 }
 
 .Button_size-s-circle {
-  width: var(--inline-height-s);
-  justify-content: center;
+    width: var(--inline-height-s);
+    justify-content: center;
+    align-items: center;
 }
 
 .Button_icon_size-s {
-  width: calc(var(--inline-height-s) - 2px);
-  height: calc(var(--inline-height-s) - 2px);
+    width: calc(var(--inline-height-s) - 2px);
+    height: calc(var(--inline-height-s) - 2px);
 }
 
 .Button_size-s-button {
-  padding: 0 calc(var(--inline-height-s) / 2);
+    padding: 0 calc(var(--inline-height-s) / 2);
 }
 
 .Button_size-s::before {
-  content: "\200b";
-  line-height: calc(var(--inline-height-s) - 2px);
+    content: "\200b";
+    line-height: calc(var(--inline-height-s) - 2px);
 }
 
 .Button_size-s .Button_icon::before {
-  font-size: var(--font-size-s);
+    font-size: var(--font-size-s);
 }
 
 .Button_size-m {
-  height: var(--inline-height-m);
+    height: var(--inline-height-m);
 }
 
 .Button_size-m-circle {
-  width: var(--inline-height-m);
-  justify-content: center;
+    width: var(--inline-height-m);
+    justify-content: center;
+    align-items: center;
 }
 
 .Button_icon_size-m {
-  width: calc(var(--inline-height-m) - 2px);
-  height: calc(var(--inline-height-m) - 2px);
+    width: calc(var(--inline-height-m) - 2px);
+    height: calc(var(--inline-height-m) - 2px);
 }
 
 .Button_size-m-button {
-  padding: 0 calc(var(--inline-height-m) / 2);
+    padding: 0 calc(var(--inline-height-m) / 2);
 }
 
 .Button_size-m::before {
-  content: "\200b";
-  line-height: calc(var(--inline-height-m) - 2px);
+    content: "\200b";
+    line-height: calc(var(--inline-height-m) - 2px);
 }
 
 .Button_size-m .Button_icon::before {
-  font-size: var(--font-size-m);
+    font-size: var(--font-size-m);
 }
 
 .Button_size-l {
-  height: var(--inline-height-l);
+    height: var(--inline-height-l);
 }
 
 .Button_size-l-circle {
-  width: var(--inline-height-l);
-  justify-content: center;
+    width: var(--inline-height-l);
+    justify-content: center;
+    align-items: center;
 }
 
 .Button_icon_size-l {
-  width: calc(var(--inline-height-l) - 2px);
-  height: calc(var(--inline-height-l) - 2px);
+    width: var(--inline-height-m);
+    height: var(--inline-height-m);
 }
 
 .Button_size-l-button {
-  padding: 0 calc(var(--inline-height-l) / 2px);
+    padding: 0 calc(var(--inline-height-l) / 2);
 }
 
 .Button_size-l .Button_icon::before {
-  font-size: var(--font-size-l);
+    font-size: var(--font-size-l);
 }
 
 .Button_size-l::before {
-  content: "\200b";
-  line-height: calc(var(--inline-height-l) - 2px);
+    content: "\200b";
+    line-height: calc(var(--inline-height-l) - 2px);
 }
 
 .Button_font-size-s {
-  font-size: var(--font-size-s);
+    font-size: var(--font-size-s);
 }
 
 .Button_font-size-m {
-  font-size: var(--font-size-m);
+    font-size: var(--font-size-m);
 }
 
 .Button_font-size-l {
-  font-size: var(--font-size-l);
+    font-size: var(--font-size-l);
 }
 
 .Button_icon {
-  order: 2;
+    order: 2;
 }
 
 .Button_caption {
-  color: var(--text_color);
+    color: var(--text_color);
 }
 
 .Button_caption-position-end {
-  order: 3;
+    order: 3;
 }
 
 .Button_caption-position-start {
-  order: 1;
+    order: 1;
 }
 
 .Button_caption-padding-start {
-  padding-right: var(--padding-s);
+    padding-right: var(--padding-s);
 }
 
 .Button_caption-padding-end {
-  padding-left: var(--padding-s);
+    padding-left: var(--padding-s);
 }

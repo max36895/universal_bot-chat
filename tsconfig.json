@@ -3,7 +3,7 @@
     "./src/**/*"
   ],
   "compilerOptions": {
-    "strict": false,
+    "strict": true,
     "esModuleInterop": true,
     "target": "es2020",
     "lib": [
@@ -20,6 +20,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "declaration": true,
+    "declarationDir": "types",
+    "sourceMap": false,
+    "outDir": "dist",
+    "emitDeclarationOnly": true
   }
 }

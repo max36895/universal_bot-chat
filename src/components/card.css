@@ -1,15 +1,11 @@
-:root {
-    --bot_bg: #782FEF;
-    --user_bg: #E5F0FF;
-}
-
 .Card {
     border-radius: var(--border-radius-m);
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     margin: var(--padding-st);
+    margin-bottom: var(--padding-m);
     position: relative;
-    max-width: 250px;
-    width: 250px;
+    min-width: 200px;
+    width: 70%;
     overflow: hidden;
     flex-shrink: 0;
     background-color: var(--bg);
@@ -53,40 +49,40 @@
     background: var(--danger_bg);
 }
 
-.Card_type-error .Card_text-title{
+.Card_type-error .Card_text-title {
     color: var(--contrast_text_color);
 }
 
 .Card_style-bot .Card_text-title {
     color: var(--contrast_text_color);
 }
-  
+
 .Card_style-bot .Card_text-date {
     left: unset;
     right: var(--padding-s);
 }
 
 .Card_text-date {
-  color: var(--unaccented_text_color);
-  font-size: var(--font-size-s);
-  position: absolute;
-  bottom: 1px;
-  left: var(--padding-s);
+    color: var(--unaccented_text_color);
+    font-size: var(--font-size-s);
+    position: absolute;
+    bottom: 1px;
+    left: var(--padding-s);
 }
 
 .Card_type-card {
     padding: 0;
 }
 
-.Card_type-card.clicable {
+.Card_type-card.clickable {
     cursor: pointer;
 }
 
-.Card_type-card.clicable:hover {
+.is-hovered .Card_type-card.clickable:hover {
     background-color: var(--unaccented_hover_bg);
 }
 
-.Card_type-card.clicable:active {
+.Card_type-card.clickable:active {
     background-color: var(--unaccented_active_bg);
 }
 
@@ -129,15 +125,15 @@
     border-radius: var(--border-radius-m);
 }
 
-.Card_list-item.clicable {
+.Card_list-item.clickable {
     cursor: pointer;
 }
 
-.Card_list-item.clicable:hover {
+.is-hovered .Card_list-item.clickable:hover {
     background-color: var(--unaccented_hover_bg);
 }
 
-.Card_list-item.clicable:active {
+.Card_list-item.clickable:active {
     background-color: var(--unaccented_active_bg);
 }
 
@@ -155,12 +151,12 @@
 .Card_list-footer {
     border-top: var(--border_color) 1px solid;
     font-size: var(--font-size-m);
-    padding: var(--padding-st) 0 0 0;
+    padding-top: var(--padding-st);
     cursor: pointer;
     color: var(--link_text_color);
 }
 
-.Card_list-footer:hover {
+.is-hovered .Card_list-footer:hover {
     color: var(--link_hover_text_color)
 }
 

@@ -1,59 +1,59 @@
 .Panel {
-  width: inherit;
-  height: inherit;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  border-radius: var(--padding-l) var(--padding-l) var(--padding-st) var(--padding-st);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bg);
+    width: inherit;
+    height: inherit;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    border-radius: var(--padding-l) var(--padding-l) var(--padding-st) var(--padding-st);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg);
 }
 
 .Panel_header {
-  height: var(--panel_header_height);
-  text-align: center;
-  display: flex;
-  background-color: var(--panel_header_bg);
-  flex-shrink: 0;
+    height: var(--panel_header_height);
+    text-align: center;
+    display: flex;
+    background-color: var(--panel_header_bg);
+    flex-shrink: 0;
 }
 
 .Panel_header-caption {
-  color: var(--contrast_text_color);
-  font-size: var(--font-size-mt);
-  padding: 0 var(--padding-l);
-  margin: auto;
+    color: var(--contrast_text_color);
+    font-size: var(--font-size-mt);
+    padding: 0 var(--padding-l);
+    margin: auto;
 }
 
 .Panel_header_close {
-  width: var(--inline-height-m);
-  height: var(--inline-height-m);
-  margin: auto var(--padding-st);
-  background: var(--translucent_dark_bg);
-  border-radius: 50%;
-  display: flex;
-  cursor: pointer;
+    width: var(--inline-height-m);
+    height: var(--inline-height-m);
+    margin: auto var(--padding-st);
+    background: var(--translucent_dark_bg);
+    border-radius: 50%;
+    display: flex;
+    cursor: pointer;
 }
 
-.Panel_header_close:hover {
-  background: var(--translucent_hover_dark_bg);
+.is-hovered .Panel_header_close:hover {
+    background: var(--translucent_hover_dark_bg);
 }
 
 .Panel_header_close:active {
-  background: var(--translucent_active_dark_bg);
+    background: var(--translucent_active_dark_bg);
 }
 
 .Panel_content {
-  flex-shrink: 1;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 1px;
+    flex-shrink: 1;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 1px;
 }
 
 .Panel_footer {
-  height: 56px;
-  border-top: 1px solid var(--border_color);
-  padding: var(--padding-s) var(--padding-st);
-  align-items: center;
-  flex-shrink: 0;
+    height: 56px;
+    border-top: 1px solid var(--border_color);
+    padding: var(--padding-s) var(--padding-st);
+    align-items: center;
+    flex-shrink: 0;
 }

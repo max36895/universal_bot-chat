@@ -1,6 +1,7 @@
-import { ICards } from "../interfaces/ICards";
+import {ICards} from "../interfaces/ICards";
 
 const KEY = 'um-chat_cards';
+const LIMIT = 100;
 
 /**
  * Return saved cards data
@@ -19,9 +20,16 @@ function getData(): ICards[] {
  * @param cards cards data
  */
 function setData(cards: ICards[]): void {
-    localStorage.setItem(KEY, JSON.stringify(cards));
+    let correctCards = cards;
+    if (correctCards.length > LIMIT) {
+        correctCards = correctCards.slice(correctCards.length - LIMIT);
+    }
+    localStorage.setItem(KEY, JSON.stringify(correctCards));
 }
 
+/**
+ * Clear cards data
+ */
 function clearData(): void {
     localStorage.removeItem(KEY);
 }

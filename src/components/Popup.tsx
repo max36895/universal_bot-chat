@@ -1,4 +1,4 @@
-import React from "react";
+import {ReactElement, useState, useEffect, CSSProperties} from "react";
 import detection from "../utils/detection";
 import './popup.css'
 
@@ -6,12 +6,12 @@ interface IPopupProps {
     /**
      * Контент, отображаемый внутри компонента
      */
-    children: React.ReactElement;
+    children: ReactElement;
     /**
      * Режим отображения окна
      * @default false
      */
-    visible: boolean;
+    opened: boolean;
     /**
      * Ширина окна
      */
@@ -26,58 +26,85 @@ interface IPopupProps {
     target?: HTMLElement;
 }
 
-/**
- * Компонент, позволяющий отображать окна.
- * @param props 
- * @returns 
- */
-export default function Popup(props: IPopupProps) {
-    const [visible, setVisible] = React.useState(false);
-    const [style, setStyle] = React.useState<React.CSSProperties>({opacity: 0})
+interface IUseMountProps {
+    opener: boolean;
+}
 
-    React.useEffect(() => {
-        if (props.visible) {
-            const positionStyle: React.CSSProperties = {};
-            if (detection.isMobile) {
-                positionStyle.width = '100vw';
-                positionStyle.height = '100vh';
-            } else {
-                positionStyle.width = Math.min(props.width, visualViewport.width) + 'px';
-                positionStyle.height = Math.min(props.height, visualViewport.height) + 'px';
-                if (props.target) {
-                    const clientRect = props.target.getBoundingClientRect();
-                    positionStyle.top = clientRect.bottom - props.height > 0 ? (clientRect.bottom - props.height) : (clientRect.top);
-                    positionStyle.left = clientRect.right - props.width > 0 ? (clientRect.right - props.width) : (clientRect.left);
-                } else {
-                    positionStyle.top = (visualViewport.width - props.width) / 2;
-                    positionStyle.left = (visualViewport.height - props.height) / 2;
-                }
-            }
-            setStyle(positionStyle);
+function getPosition(props: IPopupProps): CSSProperties {
+    const positionStyle: CSSProperties = {};
+    if (detection.isMobile) {
+        positionStyle.width = '100vw';
+        positionStyle.height = '100vh';
+    } else {
+        let viewport: {width: number, height: number};
+        if (visualViewport) {
+            viewport = {
+                width: visualViewport.width,
+                height: visualViewport.height
+            };
         } else {
+            viewport = {
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
+        }
+        positionStyle.width = Math.min(props.width, viewport.width) + 'px';
+        positionStyle.height = Math.min(props.height, viewport.height) + 'px';
+        if (props.target) {
+            const clientRect = props.target.getBoundingClientRect();
+            positionStyle.top = clientRect.bottom - props.height > 0 ? (clientRect.bottom - props.height) : (clientRect.top);
+            positionStyle.left = clientRect.right - props.width > 0 ? (clientRect.right - props.width) : (clientRect.left);
+        } else {
+            positionStyle.top = (viewport.width - props.width) / 2;
+            positionStyle.left = (viewport.height - props.height) / 2;
+        }
+    }
+    return positionStyle;
+}
+
+export function usePopup(props: IPopupProps) {
+    const [mounted, setMounted] = useState<boolean>(false);
+    const [style, setStyle] = useState<CSSProperties>({opacity: 0})
+    useEffect(() => {
+        if (props.opened && !mounted) {
+            setStyle(getPosition(props));
+            setMounted(true);
+        } else if (!props.opened && mounted) {
             const hiddenStyle = {...style};
             if (detection.isMobile) {
                 hiddenStyle.top = '100vh';
-                hiddenStyle.transition = 'top 0.7s';
+                hiddenStyle.transition = 'top 0.6s';
             } else {
                 hiddenStyle.opacity = 0;
                 hiddenStyle.transition = 'opacity 300ms';
             }
             setStyle(hiddenStyle);
-        }
-
-        if (!props.visible) {
             setTimeout(() => {
-                setVisible(props.visible);
-            }, detection.isMobile ? 690 : 290);
-        } else {
-            setVisible(props.visible);
+                setMounted(false);
+            }, detection.isMobile ? 900 : 500);
         }
-    }, [props.visible]);
+    }, [props.opened]);
 
-    return <>
-        {
-            visible ? (<div className="Popup" style={style}>{props.children}</div>) : null
-        }
-    </>
+    return {
+        isVisible: mounted,
+        style,
+        close: () => {setMounted(false)}
+    };
 }
+
+/**
+ * Компонент, позволяющий отображать окна.
+ * @param props
+ * @returns
+ */
+const Popup = (props: IPopupProps): ReactElement | null => {
+    const {isVisible, close, style} = usePopup(props);
+
+    if (!isVisible) {
+        return null;
+    }
+
+    return <div className="Popup" style={style} onTransitionEnd={close}>{props.children}</div>;
+}
+
+export default Popup;
