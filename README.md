@@ -23,4 +23,4 @@ npm start
 
 ## demo
 - [git](https://github.com/max36895/umchat_demo)
-- [codesandbox](https://codesandbox.io/s/github/max36895/universal_bot-chat)
+- [codesandbox](https://codesandbox.io/s/github/max36895/umchat_demo)
