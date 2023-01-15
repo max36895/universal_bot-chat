@@ -31,7 +31,7 @@
   },
   "scripts": {
     "rollup": "rollup -c --bundleConfigAsCjs",
-    "build": "npm rollup | npm publish"
+    "build": "npm rollup && npm publish"
   },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
