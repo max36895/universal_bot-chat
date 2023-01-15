@@ -37,8 +37,8 @@ const CardsList = (props: ICardsListProps): ReactElement => {
     }, [props.cards]);
 
     return (
-        <div className="CardsList">
-            <div className="CardsList_wrapper" ref={scrollRef as RefObject<HTMLDivElement>}>
+        <div className={`um-CardsList${buttons ? ' um-CardsList_bottom' : ''}`}>
+            <div className="um-CardsList_wrapper um-scrollbar" ref={scrollRef as RefObject<HTMLDivElement>}>
                 {cards.map((card) => {
                     return (
                         <Card key={card.messageId}
@@ -55,13 +55,12 @@ const CardsList = (props: ICardsListProps): ReactElement => {
                 })}
             </div>
             {buttons && (
-                <div className="CardsList_buttons-block">
-                    <div className="CardsList_buttons-block_wrapper">
+                <div className="um-CardsList_buttons-block">
+                    <div className="um-CardsList_buttons-block_wrapper um-scrollbar">
                         {buttons.map((button, index) => {
                             return (
                                 <Button
                                     key={index}
-                                    className="flex-shrink-0"
                                     style="secondary"
                                     caption={button.title}
                                     onClick={() => {

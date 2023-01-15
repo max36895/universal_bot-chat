@@ -1,6 +1,6 @@
-.Card {
+.um-Card {
     border-radius: var(--border-radius-m);
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 var(--padding-s) rgba(0, 0, 0, 0.3);
     margin: var(--padding-st);
     margin-bottom: var(--padding-m);
     position: relative;
@@ -11,13 +11,13 @@
     background-color: var(--bg);
 }
 
-.Card_image {
+.um-Card_image {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50%;
 }
 
-.Card_text {
+.um-Card_text {
     padding: 0;
     margin: 0;
     font-size: var(--font-size-m);
@@ -25,12 +25,12 @@
     white-space: pre-line;
 }
 
-.Card_type-text,
-.Card_type-error {
+.um-Card_type-text,
+.um-Card_type-error {
     padding: var(--padding-m) var(--padding-st);
 }
 
-.Card_style-user {
+.um-Card_style-user {
     background-color: var(--user_msg_bg);
     color: var(--text_color);
     text-align: right;
@@ -38,31 +38,31 @@
     border-bottom-right-radius: var(--border-radius-xs);
 }
 
-.Card_style-bot {
+.um-Card_style-bot {
     background-color: var(--bot_msg_bg);
     color: var(--contrast_text_color);
     text-align: left;
     border-bottom-left-radius: var(--border-radius-xs);
 }
 
-.Card.Card_type-error {
+.um-Card.um-Card_type-error {
     background: var(--danger_bg);
 }
 
-.Card_type-error .Card_text-title {
+.um-Card_type-error .um-Card_text-title {
     color: var(--contrast_text_color);
 }
 
-.Card_style-bot .Card_text-title {
+.um-Card_style-bot .um-Card_text-title {
     color: var(--contrast_text_color);
 }
 
-.Card_style-bot .Card_text-date {
+.um-Card_style-bot .um-Card_text-date {
     left: unset;
     right: var(--padding-s);
 }
 
-.Card_text-date {
+.um-Card_text-date {
     color: var(--unaccented_text_color);
     font-size: var(--font-size-s);
     position: absolute;
@@ -70,54 +70,54 @@
     left: var(--padding-s);
 }
 
-.Card_type-card {
+.um-Card_type-card {
     padding: 0;
 }
 
-.Card_type-card.clickable {
+.um-Card_type-card.um-clickable {
     cursor: pointer;
 }
 
-.is-hovered .Card_type-card.clickable:hover {
+.um-is-hovered .um-Card_type-card.um-clickable:hover {
     background-color: var(--unaccented_hover_bg);
 }
 
-.Card_type-card.clickable:active {
+.um-Card_type-card.um-clickable:active {
     background-color: var(--unaccented_active_bg);
 }
 
-.Card_big-image {
+.um-Card_big-image {
     overflow: hidden;
     position: relative;
     width: 100%;
     height: 150px;
 }
 
-.Card_card-info {
+.um-Card_card-info {
     padding: var(--padding-m);
     text-align: left;
 }
 
-.Card_card-title {
+.um-Card_card-title {
     padding-bottom: var(--padding-st);
     font-size: var(--font-size-mt);
 }
 
-.Card_card-description {
+.um-Card_card-description {
     color: var(--unaccented_text_color);
 }
 
-.Card_type-list {
+.um-Card_type-list {
     padding: var(--padding-m);
 }
 
-.Card_list-title {
+.um-Card_list-title {
     color: var(--text_color);
     font-size: var(--font-size-mt);
     padding: var(--padding-s) 0;
 }
 
-.Card_list-item {
+.um-Card_list-item {
     display: flex;
     gap: var(--padding-st);
     padding: var(--padding-st);
@@ -125,30 +125,30 @@
     border-radius: var(--border-radius-m);
 }
 
-.Card_list-item.clickable {
+.um-Card_list-item.um-clickable {
     cursor: pointer;
 }
 
-.is-hovered .Card_list-item.clickable:hover {
+.um-is-hovered .um-Card_list-item.um-clickable:hover {
     background-color: var(--unaccented_hover_bg);
 }
 
-.Card_list-item.clickable:active {
+.um-Card_list-item.um-clickable:active {
     background-color: var(--unaccented_active_bg);
 }
 
-.Card_list-item-image {
+.um-Card_list-item-image {
     width: 50px;
     height: 50px;
     flex-shrink: 0;
 }
 
-.Card_list-item-description {
+.um-Card_list-item-description {
     font-size: var(--font-size-s);
     color: var(--unaccented_text_color);
 }
 
-.Card_list-footer {
+.um-Card_list-footer {
     border-top: var(--border_color) 1px solid;
     font-size: var(--font-size-m);
     padding-top: var(--padding-st);
@@ -156,10 +156,10 @@
     color: var(--link_text_color);
 }
 
-.is-hovered .Card_list-footer:hover {
+.um-is-hovered .um-Card_list-footer:hover {
     color: var(--link_hover_text_color)
 }
 
-.Card_list-footer:active {
+.um-Card_list-footer:active {
     color: var(--link_active_text_color);
 }

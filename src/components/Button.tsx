@@ -85,11 +85,11 @@ const Button = (props: IButtonProps): ReactElement => {
         }
     };
 
-    const className = `Button Button_size-${size} Button_size-${size}-${
+    const className = `um-Button um-Button_size-${size} um-Button_size-${size}-${
         props.icon && !props.caption ? "circle" : "button"
-    } Button_font-size-${fontSize} Button_style-${readOnly ? 'readonly' : style}${
-        readOnly ? '' : ' clickable'
-    } Button_mode-${viewMode} ${
+    }${props.icon && !props.caption ? " um-Button-circle" : ""} um-font-size-${fontSize} um-Button_style-${readOnly ? 'readonly' : style}${
+        readOnly ? '' : ' um-clickable'
+    } um-Button_mode-${viewMode} ${
         props.className || ""
     }`;
 
@@ -101,21 +101,21 @@ const Button = (props: IButtonProps): ReactElement => {
         if (props.icon) {
             if (typeof props.icon !== 'string' && isValidElement(props.icon as ReactElement)) {
                 icon = cloneElement(props.icon as ReactElement, {
-                    className: `${props.icon.props.className} Button_icon_size-${size}`
+                    className: `${props.icon.props?.className || ''} um-Button_icon_size-${size}`
                 })
             } else {
-                icon = <i className={`Button_icon ${props.icon}`}/>;
+                icon = <i className={`um-Button_icon ${props.icon}`}/>;
             }
         }
 
         let caption = null;
         if (props.caption) {
             const paddingClass = icon
-                ? " Button_caption-padding-" + captionPosition
+                ? " um-Button_caption-padding-" + captionPosition
                 : "";
             caption = (
                 <span
-                    className={`Button_caption Button_caption-position-${captionPosition}${paddingClass}`}
+                    className={`um-Button_caption um-Button_caption-position-${captionPosition}${paddingClass}`}
                 >
           {props.caption}
         </span>

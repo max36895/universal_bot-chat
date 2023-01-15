@@ -1,8 +1,8 @@
-.InputBlock {
+.um-InputBlock {
     display: flex;
 }
 
-.InputBlock_textarea {
+.um-InputBlock_textarea {
     outline: none;
     border: 0;
     border-bottom: 1px solid var(--unaccented_border_color);
@@ -11,13 +11,14 @@
     margin-right: var(--padding-st);
     resize: none;
     flex-grow: 1;
+    background: var(--bg);
 }
 
-.InputBlock_textarea:focus {
+.um-InputBlock_textarea:focus {
     border-block-color: var(--unaccented_active_border_color);
 }
 
-.InputBlock_buttons {
+.um-InputBlock_buttons {
     display: flex;
     flex-direction: column;
     justify-content: center;

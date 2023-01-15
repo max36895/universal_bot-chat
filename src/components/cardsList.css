@@ -1,21 +1,24 @@
-.CardsList {
+.um-CardsList {
     position: relative;
     height: 100%;
     overflow: hidden;
-    padding-bottom: calc(var(--inline-height-m) + var(--padding-m));
     --shadow: 0 0 var(--padding-s) var(--padding-s) var(--bg);
 }
 
-.CardsList_wrapper {
+.um-CardsList_bottom {
+    padding-bottom: calc(var(--inline-height-m) + var(--padding-m));
+}
+
+.um-CardsList_wrapper {
     display: flex;
     flex-direction: column;
     height: 100%;
     min-height: 1px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
-.CardsList_wrapper::before,
-.CardsList_wrapper::after {
+.um-CardsList_wrapper::before,
+.um-CardsList_wrapper::after {
     content: '';
     position: absolute;
     left: 0;
@@ -26,30 +29,27 @@
     box-shadow: var(--shadow);
 }
 
-.CardsList_wrapper::before {
+.um-CardsList_wrapper::before {
     top: 0;
 }
 
-.CardsList_wrapper::after {
+.um-CardsList_wrapper::after {
     bottom: 0;
 }
 
-.is-windows .CardsList_wrapper {
-    margin-right: -13px;
-}
-
-.CardsList_buttons-block {
+.um-CardsList_buttons-block {
     position: absolute;
     right: 0;
     left: 0;
+    bottom: 0;
     max-width: 100%;
     background-color: var(--bg);
     box-shadow: var(--shadow);
     z-index: 1;
 }
 
-.CardsList_buttons-block::before,
-.CardsList_buttons-block::after {
+.um-CardsList_buttons-block::before,
+.um-CardsList_buttons-block::after {
     content: '';
     position: absolute;
     top: 0;
@@ -58,25 +58,25 @@
     width: 0;
 }
 
-.CardsList_buttons-block::before {
+.um-CardsList_buttons-block::before {
     left: 0;
 }
 
-.CardsList_buttons-block::after {
+.um-CardsList_buttons-block::after {
     right: 0;
 }
 
-.CardsList_buttons-block_wrapper {
-    overflow-x: scroll;
+.um-CardsList_buttons-block_wrapper {
+    overflow-x: auto;
     display: flex;
     gap: var(--padding-st);
     padding: var(--padding-st);
     padding-top: var(--padding-s);
-    padding-bottom: var(--padding-mt);
+    padding-bottom: var(--padding-s);
     width: 100%;
     box-sizing: border-box;
 }
 
-.is-windows .CardsList_buttons-block_wrapper {
-    margin-bottom: -13px;
+.um-is-windows .um-CardsList_buttons-block_wrapper {
+    padding-bottom: calc(var(--padding-s) / 2);
 }

@@ -32,13 +32,15 @@
     --inline-height-m: 24px;
     --inline-height-l: 40px;
 
+    --scrollbar_size: 5px;
+
     --bg: #FFF;
     --danger_bg: #BC0022;
-    --unaccented_bg: #F2F4F6;
-    --unaccented_hover_bg: #F1F6FB;
-    --unaccented_active_bg: #EFF8FF;
+    --unaccented_bg: #f8f8f8;
+    --unaccented_hover_bg: #eff0f4;
+    --unaccented_active_bg: #e7e9ec;
     --unaccented_border_color: #D4DADE;
-    --unaccented_active_border_color: #BBC9DD;
+    --unaccented_active_border_color: #8f99a3;
     --primary_bg: #f6733c;
     --primary_hover_bg: #e4662f;
     --primary_active_bg: #d6551f;
@@ -66,6 +68,38 @@
     position: absolute;
     bottom: 25px;
     right: 25px;
+}
+
+.um-font-size-s {
+    font-size: var(--font-size-s);
+}
+
+.um-font-size-m {
+    font-size: var(--font-size-m);
+}
+
+.um-font-size-l {
+    font-size: var(--font-size-l);
+}
+
+.um-scrollbar::-webkit-scrollbar {
+    background: var(--bg);
+    width: var(--scrollbar_size);
+    height: var(--scrollbar_size);
+}
+
+.um-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--unaccented_border_color);
+    border-radius: var(--border-radius-xs);
+    cursor: pointer;
+}
+
+.um-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--unaccented_active_border_color);
+}
+
+.um-scrollbar::-webkit-scrollbar-thumb:active {
+    background: var(--border_color);
 }
 
 .icon-send::before {

@@ -9,6 +9,8 @@ import CardsModel, {ICardsModelResponse, IRequestParser} from "./api/CardsModel"
 import Request, {IRequestSend} from "./api/Request";
 import Voice from "./api/Voice";
 import {ICards, ICardButton, IFooter, IImage, IList} from "./interfaces/ICards";
+import {getUserId} from "./utils/userId";
+import {clearUserData, clearCardsData} from "./utils/storage";
 
 export {
     UMChat,
@@ -20,7 +22,10 @@ export {
     CardsList,
     Card,
     Request,
-    Voice
+    Voice,
+    getUserId,
+    clearUserData,
+    clearCardsData
 };
 
 export type {

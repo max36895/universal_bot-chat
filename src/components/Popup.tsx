@@ -32,7 +32,7 @@ function getPosition(props: IPopupProps): CSSProperties {
         positionStyle.width = '100vw';
         positionStyle.height = '100vh';
     } else {
-        let viewport: {width: number, height: number};
+        let viewport: { width: number, height: number };
         if (visualViewport) {
             viewport = {
                 width: visualViewport.width,
@@ -48,13 +48,23 @@ function getPosition(props: IPopupProps): CSSProperties {
         const height = Math.min(props.height, viewport.height);
         positionStyle.width = width + 'px';
         positionStyle.height = height + 'px';
+
+        const getCorrectValue = (value: number, coordinate: 'top' | 'left'): number => {
+            if (coordinate === 'left') {
+                return (value + width) > viewport.width ? 0 : value;
+            }
+            return (value + height) > viewport.height ? 0 : value;
+        }
+
         if (props.target) {
             const clientRect = props.target.getBoundingClientRect();
-            positionStyle.top = clientRect.bottom - height > 0 ? (clientRect.bottom - height) : (clientRect.top);
-            positionStyle.left = clientRect.right - width > 0 ? (clientRect.right - width) : (clientRect.left);
+            positionStyle.top = getCorrectValue(clientRect.bottom - height > 0 ?
+                (clientRect.bottom - height) : (clientRect.top), 'top');
+            positionStyle.left = getCorrectValue(clientRect.right - width > 0 ?
+                (clientRect.right - width) : (clientRect.left), 'left');
         } else {
-            positionStyle.top = (viewport.width - props.width) / 2;
-            positionStyle.left = (viewport.height - props.height) / 2;
+            positionStyle.top = getCorrectValue((viewport.width - props.width) / 2, 'top');
+            positionStyle.left = getCorrectValue((viewport.height - props.height) / 2, 'left');
         }
     }
     return positionStyle;
@@ -86,7 +96,9 @@ export function usePopup(props: IPopupProps) {
     return {
         isVisible: mounted,
         style,
-        close: () => {setMounted(false)}
+        close: () => {
+            setMounted(false)
+        }
     };
 }
 
@@ -102,7 +114,7 @@ const Popup = (props: IPopupProps): ReactElement | null => {
         return null;
     }
 
-    return <div className="Popup" style={style} onTransitionEnd={close}>{props.children}</div>;
+    return <div className="um-Popup" style={style} onTransitionEnd={close}>{props.children}</div>;
 }
 
 export default Popup;

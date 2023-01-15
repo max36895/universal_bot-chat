@@ -1,5 +1,6 @@
 import {ICardButton, ICards, IImage, IList, TCardType} from "../interfaces/ICards";
 import Request, {IRequestSend} from "./Request";
+import {getUserData, setUserData} from "../utils/storage";
 
 /**
  * Интерфейс кнопки.
@@ -108,8 +109,12 @@ export interface ICardsModelResponse {
                  */
                 button: IButton;
             }
-        }
+        },
     };
+    /**
+     * Данные для сохранения в локальном хранилище
+     */
+    user_state_update?: object;
 }
 
 export interface IRequestParser {
@@ -120,7 +125,7 @@ export interface IRequestParser {
      * @param user_id Идентификатор пользователя
      * @returns
      */
-    sendRequest: (value: string, messageId: number, user_id?: string) => object;
+    sendRequest: (value: string, messageId: number, user_id?: string | number) => object;
     /**
      * Обработка полученного результата с сервера, для приведения его к корректному для работы виду
      * @param res
@@ -153,9 +158,9 @@ export default class CardsModel {
     protected _botUrl: string;
     // @ts-ignore
     protected _parser: IRequestParser;
-    protected _userId: string;
+    protected _userId: string | number;
 
-    constructor(url: string, userId: string, parser?: IRequestParser) {
+    constructor(url: string, userId: string | number, parser?: IRequestParser) {
         this._req = new Request();
         this._botUrl = url;
         this._userId = userId
@@ -167,16 +172,19 @@ export default class CardsModel {
             this._parser = parser;
         } else {
             this._parser = {
-                sendRequest: this.getDefaultSend,
-                getImage: this._getImage,
+                sendRequest: CardsModel.getDefaultSend,
+                getImage: CardsModel._getImage,
                 parseResponse(res) {
+                    if ((res as ICardsModelResponse)?.user_state_update) {
+                        setUserData((res as ICardsModelResponse).user_state_update);
+                    }
                     return res as ICardsModelResponse;
                 }
             }
         }
     }
 
-    setUserId(userId?: string): void {
+    setUserId(userId?: string | number): void {
         if (userId) {
             this._userId = userId;
         } else {
@@ -192,79 +200,20 @@ export default class CardsModel {
         userMsgCount = messageId;
     }
 
-    private getDefaultSend(value: string, messageId: number, userId: string = 'test'): object {
-        return {
-            meta: {
-                locale: "ru-Ru",
-                timezone: "UTC",
-                client_id: "web-site",
-                interfaces: {
-                    screen: {},
-                    payments: null,
-                    account_linking: null
-                }
-            },
-            session: {
-                message_id: messageId - 1,
-                session_id: "web-site",
-                skill_id: "web-site_id",
-                user_id: userId,
-                new: messageId === 1
-            },
-            request: {
-                command: value.toLowerCase(),
-                original_utterance: value,
-                nlu: {},
-                type: "SimpleUtterance"
-            },
-            state: {
-                session: {}
-            },
-            version: "1.0"
-        };
-    }
-
-    send(value: string): Promise<IRequestSend<ICardsModelResponse>> {
-        if (!this._botUrl) {
-            return Promise.reject('Please added bot url address');
+    getTTS(response: IRequestSend<ICardsModelResponse>): string {
+        if (response.status) {
+            // Пока есть сложности с синтезом речи. Поэтому читаем просто текст как сможем,
+            // или берем tts если нет text, и будь что будет
+            // todo придумать потом что-то
+            const tts = response.data?.response.text || response.data?.response.tts || "";
+            // remove all smile
+            return tts.replace(/[^\x00-\x7Fа-яА-Я]/g, '');
         }
-        this._req.post = this._parser.sendRequest(value, userMsgCount, this._userId);
-        userMsgCount++;
-        return this._req.send<ICardsModelResponse>(this._botUrl);
-    }
-
-    private _getImage(token?: string, size: string = 'one-x3'): string {
-        if (token) {
-            return `https://avatars.mds.yandex.net/get-dialogs-skill-card/${token}/${size}`;
-        }
-        return '';
-    }
-
-    private _getButton(button?: IButton): ICardButton | undefined {
-        if (button) {
-            return {
-                title: button.text || button.title,
-                url: button.url
-            };
-        }
-    }
-
-    private _addCard(cards: ICards[], config: ITextConfig): ICards[] {
-        cards.push({
-            text: config.text.trim(),
-            date: Date.now(),
-            messageId: config.messageId,
-            isBot: config.isBot || false,
-            cardType: config.type || 'text',
-            image: config.image,
-            list: config.list,
-            buttons: config.buttons
-        });
-        return cards;
+        return "";
     }
 
     addUserText(cards: ICards[], value: string): ICards[] {
-        return [...this._addCard(cards, {text: value, messageId: (userMsgCount * 2 - 1)})];
+        return [...CardsModel._addCard(cards, {text: value, messageId: (userMsgCount * 2 - 1)})];
     }
 
     addBotText(
@@ -281,7 +230,7 @@ export default class CardsModel {
                             if (!buttons) {
                                 buttons = [];
                             }
-                            buttons.push(this._getButton(btn) as IButton);
+                            buttons.push(CardsModel._getButton(btn) as IButton);
                         }
                     });
                 }
@@ -296,7 +245,7 @@ export default class CardsModel {
                             description: res.card.description
                         };
                         if (res.card.button) {
-                            config.image.button = this._getButton(res.card.button);
+                            config.image.button = CardsModel._getButton(res.card.button);
                         }
                     } else {
                         const images: IImage[] = [];
@@ -306,7 +255,7 @@ export default class CardsModel {
                                     src: `url("${this._parser.getImage(item.image_id, 'menu-list-x3')}")`,
                                     title: item.title,
                                     description: item.description,
-                                    button: this._getButton(item.button)
+                                    button: CardsModel._getButton(item.button)
                                 }
                             );
                         });
@@ -318,30 +267,99 @@ export default class CardsModel {
                         if (res.card.footer) {
                             config.list.footer = {
                                 text: res.card.footer.text,
-                                button: this._getButton(res.card.footer.button)
+                                button: CardsModel._getButton(res.card.footer.button)
                             };
                         }
                     }
                 }
-                return [...this._addCard(cards, config)];
+                return [...CardsModel._addCard(cards, config)];
             }
         }
         const config: ITextConfig = {
             type: 'error',
             text: 'Произошла ошибка!\n' + response.err,
+            isBot: true,
             messageId: (userMsgCount - 1) * 2
         };
-        return [...this._addCard(cards, config)];
+        return [...CardsModel._addCard(cards, config)];
     }
 
-    getTTS(response: IRequestSend<ICardsModelResponse>): string {
-        if (response.status) {
-            // Пока есть сложности с синтезом речи. Поэтому читаем просто текст как сможем, или берем tts если нет text, и будь что будет
-            // todo придумать потом что-то
-            const tts = response.data?.response.text || response.data?.response.tts || "";
-            // remove all smile
-            return tts.replace(/[^\x00-\x7Fа-яА-Я]/g, '');
+    send(value: string): Promise<IRequestSend<ICardsModelResponse>> {
+        if (!this._botUrl) {
+            return Promise.reject('Please added bot url address');
         }
-        return "";
+        this._req.post = this._parser.sendRequest(value, userMsgCount, this._userId);
+        userMsgCount++;
+        return this._req.send<ICardsModelResponse>(this._botUrl);
+    }
+
+    private static getDefaultSend(value: string, messageId: number, userId: string | number = 'test'): object {
+        return {
+            meta: {
+                locale: "ru-Ru",
+                timezone: "UTC",
+                client_id: "web-site",
+                interfaces: {
+                    screen: {},
+                    payments: null,
+                    account_linking: null
+                }
+            },
+            session: {
+                message_id: messageId - 1,
+                session_id: "web-site",
+                skill_id: "web-site_id",
+                user_id: userId,
+                user: {
+                    user_id: userId
+                },
+                application: {
+                    application_id: userId
+                },
+                new: messageId === 1
+            },
+            request: {
+                command: value.toLowerCase(),
+                original_utterance: value,
+                nlu: {},
+                type: "SimpleUtterance"
+            },
+            state: {
+                session: {},
+                user: getUserData(),
+                application: {}
+            },
+            version: "1.0"
+        };
+    }
+
+    private static _getButton(button?: IButton): ICardButton | undefined {
+        if (button) {
+            return {
+                title: button.text || button.title,
+                url: button.url
+            };
+        }
+    }
+
+    private static _getImage(token?: string, size: string = 'one-x3'): string {
+        if (token) {
+            return `https://avatars.mds.yandex.net/get-dialogs-skill-card/${token}/${size}`;
+        }
+        return '';
+    }
+
+    private static _addCard(cards: ICards[], config: ITextConfig): ICards[] {
+        cards.push({
+            text: config.text.trim(),
+            date: Date.now(),
+            messageId: config.messageId,
+            isBot: config.isBot || false,
+            cardType: config.type || 'text',
+            image: config.image,
+            list: config.list,
+            buttons: config.buttons
+        });
+        return cards;
     }
 }
