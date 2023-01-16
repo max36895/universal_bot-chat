@@ -1,12 +1,15 @@
 {
   "name": "umchat",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Universal chat for run Alise skills or other voice assistants on the web site",
   "keywords": [
     "chat",
     "site",
     "dialog",
-    "react"
+    "react",
+    "alisa",
+    "typescript",
+    "bot"
   ],
   "author": "Maxim-M",
   "license": "MIT",
@@ -19,6 +22,7 @@
     "@rollup/plugin-typescript": "^11.0.0",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
+    "shx": "^0.3.2",
     "rollup": "^3.10.0",
     "rollup-plugin-dts": "^5.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
@@ -31,7 +35,8 @@
   },
   "scripts": {
     "rollup": "rollup -c --bundleConfigAsCjs",
-    "build": "npm rollup && npm publish"
+    "dev": "rollup --config rollup.config.dev.js --bundleConfigAsCjs",
+    "build": "shx rm -rf dist && npm run rollup && npm publish"
   },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -39,12 +44,11 @@
     "dist"
   ],
   "types": "dist/index.d.ts",
-
   "bugs": {
     "url": "https://github.com/max36895/universal_bot-chat/issues"
   },
   "engines": {
-    "node": ">=15"
+    "node": ">=12"
   },
   "repository": {
     "type": "git",

@@ -110,3 +110,8 @@ And also define a class in which new values for css variables will be specified
 ## Demo
 - [git](https://github.com/max36895/umchat_demo)
 - [codesandbox](https://codesandbox.io/s/github/max36895/umchat_demo)
+
+Помощь и поддержка проекта
+------
+Любая помощь и поддержка приветствуется.
+Если будут найдены различные ошибки или предложения по улучшению, то смело пишите на почту: maximco36895@yandex.ru
