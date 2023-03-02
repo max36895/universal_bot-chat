@@ -1,5 +1,5 @@
 import "./button.css";
-import {ReactElement, LegacyRef, MouseEvent, cloneElement, isValidElement} from "react";
+import {ReactElement, LegacyRef, MouseEvent, cloneElement, isValidElement, memo} from "react";
 
 export type TButtonSize = 's' | 'm' | 'l';
 export type TButtonViewMode = 'filled' | 'outlined';
@@ -111,8 +111,8 @@ const Button = (props: IButtonProps): ReactElement => {
         let caption = null;
         if (props.caption) {
             const paddingClass = icon
-                ? " um-Button_caption-padding-" + captionPosition
-                : "";
+                ? ` um-Button_caption-padding-${captionPosition}`
+                : '';
             caption = (
                 <span
                     className={`um-Button_caption um-Button_caption-position-${captionPosition}${paddingClass}`}
@@ -131,10 +131,13 @@ const Button = (props: IButtonProps): ReactElement => {
     }
 
     return (
-        <button ref={props.forwardedRef} title={props.title} className={className} onClick={onClickHandler}>
+        <button ref={props.forwardedRef}
+                title={props.title}
+                className={className}
+                onClick={onClickHandler}>
             {content}
         </button>
     );
 }
 
-export default Button;
+export default memo(Button);

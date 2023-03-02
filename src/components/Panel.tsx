@@ -1,4 +1,4 @@
-import {ReactElement} from "react";
+import {ReactElement, ReactNode, memo} from "react";
 import "./panel.css";
 
 interface IPanelProps {
@@ -9,7 +9,7 @@ interface IPanelProps {
     /**
      * Основное содержимое панели
      */
-    children?: ReactElement;
+    children?: ReactNode;
     /**
      * Содержимое, отображаемое в самом низу панели
      */
@@ -54,4 +54,4 @@ const Panel = (props: IPanelProps): ReactElement => {
     );
 }
 
-export default Panel;
+export default memo(Panel);

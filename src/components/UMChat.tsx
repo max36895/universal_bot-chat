@@ -1,4 +1,4 @@
-import {ReactElement, useState, useRef, useEffect, LegacyRef} from "react";
+import {ReactElement, useState, useRef, useEffect, useCallback, LegacyRef, memo} from "react";
 import Button, {TButtonSize, TButtonViewMode, TButtonStyle} from "./Button";
 import Panel from "./Panel";
 import Popup from "./Popup";
@@ -122,6 +122,16 @@ const ICON_MESSAGE = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
         stroke="var(--text_color)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
+function getItems(isSavedData: boolean, getData: () => ICards[]): ICards[] | undefined {
+    if (isSavedData) {
+        const items = getData();
+        if (items.length) {
+            return items;
+        }
+    }
+    return;
+}
+
 /**
  * Компонент, позволяющий открывать окно-чат с ботом, а также обрабатывать команды пользователя, и при необходимости сохранять.
  * Компонент работает в режиме запрос ответ, не подписываясь на возможность получения дополнительных ответов. 1 запрос, 1 ответ
@@ -130,9 +140,9 @@ const ICON_MESSAGE = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
  */
 const UMChat = (props: IUMChatProps): ReactElement => {
     const [popupVisible, setPopupVisible] = useState<boolean>(false);
-    const [cards, setCards] = useState<ICards[]>([]);
-    const [cardsModel] = useState<CardsModel>((new CardsModel(props.config.url, props.config.userId || '', props.config.requestParser)));
-    const [voice] = useState<Voice>((new Voice()));
+    const [loading, setLoading] = useState<boolean>(true);
+    const [readOnly, setReadOnly] = useState<boolean>(false);
+    const [voice] = useState<Voice>(() => (new Voice()));
     const buttonRef = useRef<HTMLButtonElement>();
     const {
         buttonIcon = ICON_MESSAGE,
@@ -145,19 +155,13 @@ const UMChat = (props: IUMChatProps): ReactElement => {
         buttonCaption
     } = props;
     const {setData = defaultSetData, getData = defaultGetData} = props.config.dataHandlers || {}
+    const [cardsModel] = useState<CardsModel>(() => (new CardsModel(
+        props.config.url,
+        props.config.userId || '',
+        props.config.requestParser,
+        getItems(isSavedData, getData)
+    )));
     const {width: panelWidth = 350, height: panelHeight = 500} = props.panelSize || {}
-
-    useEffect(() => {
-        if (isSavedData) {
-            const items = getData();
-            if (items.length) {
-                cardsModel.setMessageId((items[items.length - 1].messageId / 2) + 1);
-                setCards(items);
-            }
-        } else {
-            cardsModel.setMessageId(0);
-        }
-    }, []);
 
     useEffect(() => {
         cardsModel.setUrl(props.config.url);
@@ -175,15 +179,25 @@ const UMChat = (props: IUMChatProps): ReactElement => {
         setPopupVisible(!popupVisible);
     };
 
-    const sendHandler = (value: string) => {
+    const sendHandler = useCallback((value: string) => {
         if (value.trim()) {
-            const newCards = cardsModel.addUserText(cards, value);
-            setCards(newCards);
+            const newCards = cardsModel.addUserText(value);
+            setLoading(true);
+            cardsModel.setCards(newCards);
             setData(newCards);
+            let timeout = window.setTimeout(() => {
+                setReadOnly(true);
+                timeout = 0;
+            }, 1000);
 
             cardsModel.send(value).then((res) => {
-                const newCards = cardsModel.addBotText(cards, res);
-                setCards(newCards);
+                const newCards = cardsModel.addBotText(res);
+                if (timeout) {
+                    clearTimeout(timeout);
+                }
+                setReadOnly(false);
+                setLoading(false);
+                cardsModel.setCards(newCards);
                 setData(newCards);
                 if (isVoiceControl) {
                     const text = cardsModel.getTTS(res);
@@ -193,18 +207,18 @@ const UMChat = (props: IUMChatProps): ReactElement => {
                 }
             });
         }
-    };
+    }, []);
 
-    const sendCardHandler = (value: ICardButton): void => {
+    const sendCardHandler = useCallback((value: ICardButton): void => {
         voice.speakStop();
         if (value.url) {
             window.open(value.url, '_blank');
         } else {
             sendHandler(value.title);
         }
-    }
+    }, []);
 
-    let classes = 'UMChat_themes-' + theme;
+    let classes = 'UMChat UMChat_themes-' + theme;
     if (detection.isWindows) {
         classes += ' um-is-windows';
     }
@@ -221,7 +235,7 @@ const UMChat = (props: IUMChatProps): ReactElement => {
     }
 
     return (
-        <div className={`UMChat ${classes}`}>
+        <div className={`${classes}`}>
             <Button
                 forwardedRef={buttonRef as LegacyRef<HTMLButtonElement>}
                 onClick={toggleHandler}
@@ -231,16 +245,24 @@ const UMChat = (props: IUMChatProps): ReactElement => {
                 caption={buttonCaption}
                 children={props.buttonContent}
                 style={buttonStyle}/>
-            <Popup opened={popupVisible} width={panelWidth} height={panelHeight} target={buttonRef.current}>
+            <Popup opened={popupVisible}
+                   width={panelWidth}
+                   height={panelHeight}
+                   target={buttonRef.current}>
                 <Panel
                     caption={props.panelTitle}
-                    footerTemplate={<InputBlock onSend={sendHandler} isVoiceControl={isVoiceControl} autofocus={true}/>}
+                    footerTemplate={<InputBlock onSend={sendHandler}
+                                                isVoiceControl={isVoiceControl}
+                                                autofocus={true}
+                                                readOnly={readOnly}/>}
                     onClose={toggleHandler}>
-                    <CardsList cards={cards} onSend={sendCardHandler}/>
+                    <CardsList cards={cardsModel.getCards()}
+                               loading={loading}
+                               onSend={sendCardHandler}/>
                 </Panel>
             </Popup>
         </div>
     );
 }
 
-export default UMChat;
+export default memo(UMChat);

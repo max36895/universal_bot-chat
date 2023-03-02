@@ -1,4 +1,4 @@
-import {ReactElement, useRef, useEffect, RefObject} from "react";
+import {ReactElement, useRef, useEffect, RefObject, memo} from "react";
 import Button from "./Button";
 import Card from "./Card";
 import {ICardButton, ICards} from "../interfaces/ICards";
@@ -9,6 +9,10 @@ interface ICardsListProps {
      * Массив карточек
      */
     cards?: ICards[];
+    /**
+     * Определят ожидание ответа от сервера
+     */
+    loading?: boolean;
     /**
      * Событие обработки действия
      * @param value
@@ -34,7 +38,7 @@ const CardsList = (props: ICardsListProps): ReactElement => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = Math.max(scrollRef.current.scrollHeight - scrollRef.current.clientHeight, 0);
         }
-    }, [props.cards]);
+    }, [props.cards?.length]);
 
     return (
         <div className={`um-CardsList${buttons ? ' um-CardsList_bottom' : ''}`}>
@@ -48,9 +52,7 @@ const CardsList = (props: ICardsListProps): ReactElement => {
                               type={card.cardType}
                               image={card.image}
                               list={card.list}
-                              onSend={(value) => {
-                                  props.onSend?.(value)
-                              }}/>
+                              onSend={props.onSend}/>
                     );
                 })}
             </div>
@@ -76,4 +78,4 @@ const CardsList = (props: ICardsListProps): ReactElement => {
     );
 }
 
-export default CardsList;
+export default memo(CardsList);

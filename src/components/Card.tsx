@@ -1,4 +1,4 @@
-import {ReactElement, CSSProperties} from "react";
+import {ReactElement, CSSProperties, memo} from "react";
 import {ICardButton, IImage, IList, TCardType} from "../interfaces/ICards";
 import {getDate} from "../utils/date";
 import "./card.css";
@@ -109,8 +109,7 @@ const Card = (props: ICardProps): ReactElement => {
     if (type === 'card') {
         return getTypeCard(props);
     }
-
     return getTypeText(props);
 }
 
-export default Card;
+export default memo(Card);

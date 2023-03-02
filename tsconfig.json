@@ -22,6 +22,7 @@
     "isolatedModules": true,
     "declaration": true,
     "declarationDir": "types",
+	"removeComments": true,
     "sourceMap": false,
     "outDir": "dist",
     "emitDeclarationOnly": true

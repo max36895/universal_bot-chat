@@ -1,4 +1,4 @@
-import {ReactElement, useState, useEffect, CSSProperties} from "react";
+import {ReactElement, ReactNode, useState, useEffect, CSSProperties, memo} from "react";
 import detection from "../utils/detection";
 import './popup.css'
 
@@ -6,7 +6,7 @@ interface IPopupProps {
     /**
      * Контент, отображаемый внутри компонента
      */
-    children: ReactElement;
+    children: ReactNode;
     /**
      * Режим отображения окна
      * @default false
@@ -109,7 +109,6 @@ export function usePopup(props: IPopupProps) {
  */
 const Popup = (props: IPopupProps): ReactElement | null => {
     const {isVisible, close, style} = usePopup(props);
-
     if (!isVisible) {
         return null;
     }
@@ -117,4 +116,4 @@ const Popup = (props: IPopupProps): ReactElement | null => {
     return <div className="um-Popup" style={style} onTransitionEnd={close}>{props.children}</div>;
 }
 
-export default Popup;
+export default memo(Popup);

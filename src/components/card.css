@@ -144,7 +144,7 @@
 }
 
 .um-Card_list-item-description {
-    font-size: var(--font-size-s);
+    font-size: var(--font-size-m);
     color: var(--unaccented_text_color);
 }
 

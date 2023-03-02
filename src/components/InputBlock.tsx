@@ -1,4 +1,4 @@
-import {ReactElement, useEffect, useState, useRef, RefObject, KeyboardEvent} from "react";
+import {ReactElement, useEffect, useState, useRef, RefObject, KeyboardEvent, memo, useCallback} from "react";
 import Button from "./Button";
 import Voice from "../api/Voice";
 import "./inputBlock.css";
@@ -11,6 +11,7 @@ interface IInputBlockProps {
     isVoiceControl?: boolean;
 
     autofocus?: boolean;
+    readOnly?: boolean;
     /**
      * Событие обработки ввода
      * @param value
@@ -47,7 +48,7 @@ const ICON_SEND = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fi
 const InputBlock = (props: IInputBlockProps): ReactElement => {
     const inputRef = useRef<HTMLTextAreaElement>();
     const [inputValue, setInputValue] = useState<string>('');
-    const [voice] = useState(new Voice());
+    const [voice] = useState(() => (new Voice()));
     const [voiceIcon, setVoiceIcon] = useState(ICON_VOICE);
 
     useEffect(() => {
@@ -86,17 +87,17 @@ const InputBlock = (props: IInputBlockProps): ReactElement => {
         setInputValue('');
     };
 
-    const onClickHandler = () => {
-        onSend(inputValue);
-    };
+    const onClickHandler = useCallback(() => {
+        onSend(inputRef.current?.value || '');
+    }, []);
 
-    const inputHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    const inputHandler = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.keyCode === 13 && !(e.ctrlKey || !e.shiftKey)) {
             onClickHandler();
         }
-    };
+    }, []);
 
-    const onVoiceHandler = () => {
+    const onVoiceHandler = useCallback(() => {
         if (props.isVoiceControl) {
             if (voice.isSpeak()) {
                 voice.speakStop();
@@ -115,7 +116,7 @@ const InputBlock = (props: IInputBlockProps): ReactElement => {
                 })
                 .catch();
         }
-    };
+    }, [props.isVoiceControl]);
 
     return (
         <div className="um-InputBlock">
@@ -125,18 +126,20 @@ const InputBlock = (props: IInputBlockProps): ReactElement => {
                 value={inputValue}
                 placeholder="Введите текст"
                 onChange={(event => setInputValue(event.target.value))}
+                readOnly={props.readOnly}
                 onKeyUp={inputHandler}/>
             <div className="um-InputBlock_buttons">
                 <Button
                     size="m"
                     title="Отправить"
-                    readOnly={inputValue === ''}
+                    readOnly={props.readOnly || inputValue === ''}
                     icon={ICON_SEND}
                     onClick={onClickHandler}
                 />
                 {
                     props.isVoiceControl && (<Button
                         icon={voiceIcon}
+                        readOnly={props.readOnly}
                         size="m"
                         title={voice.isSpeech() ? "Пауза" : "Сказать"}
                         onClick={onVoiceHandler}
@@ -147,4 +150,4 @@ const InputBlock = (props: IInputBlockProps): ReactElement => {
     );
 }
 
-export default InputBlock;
+export default memo(InputBlock);

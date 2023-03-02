@@ -159,12 +159,17 @@ export default class CardsModel {
     // @ts-ignore
     protected _parser: IRequestParser;
     protected _userId: string | number;
+    protected _cards: ICards[] = [];
 
-    constructor(url: string, userId: string | number, parser?: IRequestParser) {
+    constructor(url: string, userId: string | number, parser?: IRequestParser, cards?: ICards[]) {
         this._req = new Request();
         this._botUrl = url;
         this._userId = userId
         this.setParser(parser);
+        if (cards) {
+            this.setCards(cards);
+            this.setMessageId((cards[cards.length - 1].messageId / 2) + 1);
+        }
     }
 
     setParser(parser: IRequestParser | undefined): void {
@@ -212,12 +217,11 @@ export default class CardsModel {
         return "";
     }
 
-    addUserText(cards: ICards[], value: string): ICards[] {
-        return [...CardsModel._addCard(cards, {text: value, messageId: (userMsgCount * 2 - 1)})];
+    addUserText(value: string): ICards[] {
+        return CardsModel._addCard(this._cards, {text: value, messageId: (userMsgCount * 2 - 1)});
     }
 
     addBotText(
-        cards: ICards[],
         response: IRequestSend<ICardsModelResponse>
     ): ICards[] {
         if (response.status) {
@@ -272,7 +276,7 @@ export default class CardsModel {
                         }
                     }
                 }
-                return [...CardsModel._addCard(cards, config)];
+                return CardsModel._addCard(this._cards, config);
             }
         }
         const config: ITextConfig = {
@@ -281,7 +285,7 @@ export default class CardsModel {
             isBot: true,
             messageId: (userMsgCount - 1) * 2
         };
-        return [...CardsModel._addCard(cards, config)];
+        return CardsModel._addCard(this._cards, config);
     }
 
     send(value: string): Promise<IRequestSend<ICardsModelResponse>> {
@@ -291,6 +295,14 @@ export default class CardsModel {
         this._req.post = this._parser.sendRequest(value, userMsgCount, this._userId);
         userMsgCount++;
         return this._req.send<ICardsModelResponse>(this._botUrl);
+    }
+
+    getCards(): ICards[] {
+        return this._cards;
+    }
+
+    setCards(cards: ICards[]): void {
+        this._cards = cards;
     }
 
     private static getDefaultSend(value: string, messageId: number, userId: string | number = 'test'): object {
