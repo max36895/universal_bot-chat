@@ -1,4 +1,4 @@
-import {ReactElement, ReactNode, useState, useEffect, CSSProperties, memo} from "react";
+import { ReactElement, ReactNode, useState, useEffect, CSSProperties, memo, useCallback } from "react";
 import detection from "../utils/detection";
 import './popup.css'
 
@@ -72,13 +72,16 @@ function getPosition(props: IPopupProps): CSSProperties {
 
 export function usePopup(props: IPopupProps) {
     const [mounted, setMounted] = useState<boolean>(false);
-    const [style, setStyle] = useState<CSSProperties>({opacity: 0})
+    const [style, setStyle] = useState<CSSProperties>({ opacity: 0 });
+    const closeHandler = useCallback(() => {
+        setMounted(false);
+    }, []);
     useEffect(() => {
         if (props.opened && !mounted) {
             setStyle(getPosition(props));
             setMounted(true);
         } else if (!props.opened && mounted) {
-            const hiddenStyle = {...style};
+            const hiddenStyle = { ...style };
             if (detection.isMobile) {
                 hiddenStyle.top = '100vh';
                 hiddenStyle.transition = 'top 0.6s';
@@ -96,9 +99,7 @@ export function usePopup(props: IPopupProps) {
     return {
         isVisible: mounted,
         style,
-        close: () => {
-            setMounted(false)
-        }
+        close
     };
 }
 
@@ -108,7 +109,7 @@ export function usePopup(props: IPopupProps) {
  * @returns
  */
 const Popup = (props: IPopupProps): ReactElement | null => {
-    const {isVisible, close, style} = usePopup(props);
+    const { isVisible, close, style } = usePopup(props);
     if (!isVisible) {
         return null;
     }

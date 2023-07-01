@@ -69,7 +69,7 @@ interface IButtonProps {
  * @param props
  * @returns ReactElement
  */
-const Button = (props: IButtonProps): ReactElement => {
+export default function Button(props: IButtonProps): ReactElement {
     const {
         size = "m",
         fontSize = "m",
@@ -139,5 +139,3 @@ const Button = (props: IButtonProps): ReactElement => {
         </button>
     );
 }
-
-export default memo(Button);

@@ -36,9 +36,7 @@ const Panel = (props: IPanelProps): ReactElement => {
             <div className="um-Panel_header">
                 <span className="um-Panel_header-caption">{props.caption}</span>
                 <i className="um-Panel_header_close"
-                   onClick={() => {
-                       props.onClose?.();
-                   }}>
+                   onClick={props.onClose}>
                     <svg xmlns="http://www.w3.org/2000/svg"
                          width="var(--inline-height-m)"
                          height="var(--inline-height-m)"
