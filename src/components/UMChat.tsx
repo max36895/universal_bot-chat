@@ -177,9 +177,9 @@ const UMChat = (props: IUMChatProps): ReactElement => {
         cardsModel.setParser(props.config.requestParser);
     }, [props.config.requestParser]);
 
-    const toggleHandler = () => {
+    const toggleHandler = useCallback(() => {
         setPopupVisible(!popupVisible);
-    };
+    }, [popupVisible]);
 
     const sendHandler = useCallback((value: string) => {
         if (value.trim()) {
