@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode, useState, useEffect, CSSProperties, memo, useCallback } from "react";
 import detection from "../utils/detection";
-import './popup.css'
+import "./popup.css";
 
 interface IPopupProps {
     /**
@@ -29,42 +29,46 @@ interface IPopupProps {
 function getPosition(props: IPopupProps): CSSProperties {
     const positionStyle: CSSProperties = {};
     if (detection.isMobile) {
-        positionStyle.width = '100vw';
-        positionStyle.height = '100vh';
+        positionStyle.width = "100vw";
+        positionStyle.height = "100vh";
     } else {
-        let viewport: { width: number, height: number };
+        let viewport: { width: number; height: number };
         if (visualViewport) {
             viewport = {
                 width: visualViewport.width,
-                height: visualViewport.height
+                height: visualViewport.height,
             };
         } else {
             viewport = {
                 width: window.innerWidth,
-                height: window.innerHeight
+                height: window.innerHeight,
             };
         }
         const width = Math.min(props.width, viewport.width);
         const height = Math.min(props.height, viewport.height);
-        positionStyle.width = width + 'px';
-        positionStyle.height = height + 'px';
+        positionStyle.width = width + "px";
+        positionStyle.height = height + "px";
 
-        const getCorrectValue = (value: number, coordinate: 'top' | 'left'): number => {
-            if (coordinate === 'left') {
-                return (value + width) > viewport.width ? 0 : value;
+        const getCorrectValue = (value: number, coordinate: "top" | "left"): number => {
+            if (coordinate === "left") {
+                return value + width > viewport.width ? 0 : value;
             }
-            return (value + height) > viewport.height ? 0 : value;
-        }
+            return value + height > viewport.height ? 0 : value;
+        };
 
         if (props.target) {
             const clientRect = props.target.getBoundingClientRect();
-            positionStyle.top = getCorrectValue(clientRect.bottom - height > 0 ?
-                (clientRect.bottom - height) : (clientRect.top), 'top');
-            positionStyle.left = getCorrectValue(clientRect.right - width > 0 ?
-                (clientRect.right - width) : (clientRect.left), 'left');
+            positionStyle.top = getCorrectValue(
+                clientRect.bottom - height > 0 ? clientRect.bottom - height : clientRect.top,
+                "top"
+            );
+            positionStyle.left = getCorrectValue(
+                clientRect.right - width > 0 ? clientRect.right - width : clientRect.left,
+                "left"
+            );
         } else {
-            positionStyle.top = getCorrectValue((viewport.width - props.width) / 2, 'top');
-            positionStyle.left = getCorrectValue((viewport.height - props.height) / 2, 'left');
+            positionStyle.top = getCorrectValue((viewport.width - props.width) / 2, "top");
+            positionStyle.left = getCorrectValue((viewport.height - props.height) / 2, "left");
         }
     }
     return positionStyle;
@@ -73,7 +77,7 @@ function getPosition(props: IPopupProps): CSSProperties {
 export function usePopup(props: IPopupProps) {
     const [mounted, setMounted] = useState<boolean>(false);
     const [style, setStyle] = useState<CSSProperties>({ opacity: 0 });
-    const closeHandler = useCallback(() => {
+    const endMoundedHandler = useCallback(() => {
         setMounted(false);
     }, []);
     useEffect(() => {
@@ -83,23 +87,26 @@ export function usePopup(props: IPopupProps) {
         } else if (!props.opened && mounted) {
             const hiddenStyle = { ...style };
             if (detection.isMobile) {
-                hiddenStyle.top = '100vh';
-                hiddenStyle.transition = 'top 0.6s';
+                hiddenStyle.top = "100vh";
+                hiddenStyle.transition = "top 0.6s";
             } else {
                 hiddenStyle.opacity = 0;
-                hiddenStyle.transition = 'opacity 300ms';
+                hiddenStyle.transition = "opacity 300ms";
             }
             setStyle(hiddenStyle);
-            setTimeout(() => {
-                setMounted(false);
-            }, detection.isMobile ? 900 : 500);
+            setTimeout(
+                () => {
+                    setMounted(false);
+                },
+                detection.isMobile ? 900 : 500
+            );
         }
     }, [props.opened]);
 
     return {
         isVisible: mounted,
         style,
-        close
+        endMoundedHandler,
     };
 }
 
@@ -109,12 +116,16 @@ export function usePopup(props: IPopupProps) {
  * @returns
  */
 const Popup = (props: IPopupProps): ReactElement | null => {
-    const { isVisible, close, style } = usePopup(props);
+    const { isVisible, endMoundedHandler, style } = usePopup(props);
     if (!isVisible) {
         return null;
     }
 
-    return <div className="um-Popup" style={style} onTransitionEnd={close}>{props.children}</div>;
-}
+    return (
+        <div className="um-Popup" style={style} onTransitionEnd={endMoundedHandler}>
+            {props.children}
+        </div>
+    );
+};
 
 export default memo(Popup);

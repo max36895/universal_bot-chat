@@ -58,7 +58,7 @@ export default class Voice {
         const voices = this._synth.getVoices();
         let index = 0;
         for (let i = 0; i < voices.length; i++) {
-            if (voices[i].lang === 'ru-RU') {
+            if (voices[i].lang === "ru-RU") {
                 index = i;
                 break;
             }
@@ -107,7 +107,7 @@ export default class Voice {
         return new Promise((resolve, reject) => {
             this._speechPromise = {
                 resolve,
-                reject
+                reject,
             };
         });
     }

@@ -1,16 +1,16 @@
-import UMChat, {IAppConfig} from './components/UMChat';
-import Panel from './components/Panel';
-import Popup from './components/Popup';
+import UMChat, { IAppConfig } from "./components/UMChat";
+import Panel from "./components/Panel";
+import Popup from "./components/Popup";
 import InputBlock from "./components/InputBlock";
-import Button, {TButtonViewMode, TButtonSize, TButtonStyle} from "./components/Button";
+import Button, { TButtonViewMode, TButtonSize, TButtonStyle } from "./components/Button";
 import CardsList from "./components/CardsList";
 import Card from "./components/Card";
-import CardsModel, {ICardsModelResponse, IRequestParser} from "./api/CardsModel";
-import Request, {IRequestSend} from "./api/Request";
+import CardsModel, { ICardsModelResponse, IRequestParser } from "./api/CardsModel";
+import Request, { IRequestSend } from "./api/Request";
 import Voice from "./api/Voice";
-import {ICards, ICardButton, IFooter, IImage, IList} from "./interfaces/ICards";
-import {getUserId} from "./utils/userId";
-import {clearUserData, clearCardsData} from "./utils/storage";
+import { ICards, ICardButton, IFooter, IImage, IList } from "./interfaces/ICards";
+import { getUserId } from "./utils/userId";
+import { clearUserData, clearCardsData } from "./utils/storage";
 
 export {
     UMChat,
@@ -25,7 +25,7 @@ export {
     Voice,
     getUserId,
     clearUserData,
-    clearCardsData
+    clearCardsData,
 };
 
 export type {
@@ -40,5 +40,5 @@ export type {
     ICardButton,
     ICards,
     ICardsModelResponse,
-    IRequestParser
+    IRequestParser,
 };

@@ -157,7 +157,7 @@
 }
 
 .um-is-hovered .um-Card_list-footer:hover {
-    color: var(--link_hover_text_color)
+    color: var(--link_hover_text_color);
 }
 
 .um-Card_list-footer:active {

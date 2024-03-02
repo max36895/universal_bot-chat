@@ -69,9 +69,9 @@ export default class Request {
         this._error = null;
         const data: any = await this._run();
         if (this._error) {
-            return {status: false, data: null, err: this._error};
+            return { status: false, data: null, err: this._error };
         }
-        return {status: true, data};
+        return { status: true, data };
     }
 
     /**

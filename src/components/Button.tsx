@@ -1,9 +1,9 @@
 import "./button.css";
-import {ReactElement, LegacyRef, MouseEvent, cloneElement, isValidElement, memo} from "react";
+import { ReactElement, LegacyRef, MouseEvent, cloneElement, isValidElement, memo } from "react";
 
-export type TButtonSize = 's' | 'm' | 'l';
-export type TButtonViewMode = 'filled' | 'outlined';
-export type TButtonStyle = 'primary' | 'secondary';
+export type TButtonSize = "s" | "m" | "l";
+export type TButtonViewMode = "filled" | "outlined";
+export type TButtonStyle = "primary" | "secondary";
 
 interface IButtonProps {
     /**
@@ -76,7 +76,7 @@ export default function Button(props: IButtonProps): ReactElement {
         style = "primary",
         viewMode = "outlined",
         captionPosition = "end",
-        readOnly
+        readOnly,
     } = props;
 
     const onClickHandler = (e: MouseEvent) => {
@@ -87,11 +87,9 @@ export default function Button(props: IButtonProps): ReactElement {
 
     const className = `um-Button um-Button_size-${size} um-Button_size-${size}-${
         props.icon && !props.caption ? "circle" : "button"
-    }${props.icon && !props.caption ? " um-Button-circle" : ""} um-font-size-${fontSize} um-Button_style-${readOnly ? 'readonly' : style}${
-        readOnly ? '' : ' um-clickable'
-    } um-Button_mode-${viewMode} ${
-        props.className || ""
-    }`;
+    }${props.icon && !props.caption ? " um-Button-circle" : ""} um-font-size-${fontSize} um-Button_style-${
+        readOnly ? "readonly" : style
+    }${readOnly ? "" : " um-clickable"} um-Button_mode-${viewMode} ${props.className || ""}`;
 
     let content;
     if (props.children) {
@@ -99,26 +97,22 @@ export default function Button(props: IButtonProps): ReactElement {
     } else {
         let icon = null;
         if (props.icon) {
-            if (typeof props.icon !== 'string' && isValidElement(props.icon as ReactElement)) {
+            if (typeof props.icon !== "string" && isValidElement(props.icon as ReactElement)) {
                 icon = cloneElement(props.icon as ReactElement, {
-                    className: `${props.icon.props?.className || ''} um-Button_icon_size-${size}`
-                })
+                    className: `${props.icon.props?.className || ""} um-Button_icon_size-${size}`,
+                });
             } else {
-                icon = <i className={`um-Button_icon ${props.icon}`}/>;
+                icon = <i className={`um-Button_icon ${props.icon}`} />;
             }
         }
 
         let caption = null;
         if (props.caption) {
-            const paddingClass = icon
-                ? ` um-Button_caption-padding-${captionPosition}`
-                : '';
+            const paddingClass = icon ? ` um-Button_caption-padding-${captionPosition}` : "";
             caption = (
-                <span
-                    className={`um-Button_caption um-Button_caption-position-${captionPosition}${paddingClass}`}
-                >
-          {props.caption}
-        </span>
+                <span className={`um-Button_caption um-Button_caption-position-${captionPosition}${paddingClass}`}>
+                    {props.caption}
+                </span>
             );
         }
 
@@ -131,10 +125,7 @@ export default function Button(props: IButtonProps): ReactElement {
     }
 
     return (
-        <button ref={props.forwardedRef}
-                title={props.title}
-                className={className}
-                onClick={onClickHandler}>
+        <button ref={props.forwardedRef} title={props.title} className={className} onClick={onClickHandler}>
             {content}
         </button>
     );
