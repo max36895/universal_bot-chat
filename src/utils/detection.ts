@@ -17,7 +17,7 @@ interface INavigator extends Navigator {
     userAgentData: IUserAgentData;
 }
 
-function init() {
+function init(): void {
     detection.isWindows = !!navigator.userAgent.match(/Windows/g);
     detection.isMac = !!navigator.userAgent.match(/Mac OS/g);
     detection.isLinux = !!navigator.userAgent.match(/Linux/g);

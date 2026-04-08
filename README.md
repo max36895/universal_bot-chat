@@ -1,48 +1,58 @@
 # umchat
-umchat for run Alise skills or other voice assistants on the website
+
+`umchat` for run Alise skills or other voice assistants on the website
 
 ## Run
-Install dependencies 
+
+Install dependencies
+
 ```bash
 npm i umchat
 ```
+
 To start a chat, use the UChat component, passing the options necessary for the correct operation
+
 ```tsx
-import {UMChat, IAppConfig} from 'umchat';
+import { UMChat, IAppConfig } from 'umchat';
 function MyComponent() {
     const config: IAppConfig = {
         url: '...', // webhook for skill,
-        userId: 'local_test'
+        userId: 'local_test',
     };
-    return <UMChat config={config}
-                   panelTitle="skill name"
-                   className="UMChat_absolute"/>
+    return <UMChat config={config} panelTitle="skill name" className="UMChat_absolute" />;
 }
 ```
+
 Run project
+
 ```bash
 npm start
 ```
 
 ## Generate userId
+
 To get the userId, you can use the standard generation method, or use your own solution.
+
 ```tsx
-import {getUserId, IAppConfig} from "umchat";
+import { getUserId, IAppConfig } from 'umchat';
 
 function MyComponent() {
     const config: IAppConfig = {
         url: '...', // webhook for skill,
-        userId: getUserId()
+        userId: getUserId(),
     };
-    return <UMChat config={config}/>
+    return <UMChat config={config} />;
 }
 ```
+
 You can pass an argument to the method that takes a boolean value. When passing the value true, the userId is recreated on each page opening, and all data is cleared from the storage. You should not pass this argument in a release application.
 
 ## Theme
+
 For the component, you can set up themes, for this, pass the "theme" option to the component, with the name of your theme.
 
 And also define a class in which new values for css variables will be specified
+
 ```css
 .UMChat_themes-@{your_theme} {
     --panel_width: inherit; /* panel width */
@@ -63,7 +73,7 @@ And also define a class in which new values for css variables will be specified
     --font-size-mt: 18px; /* long font size */
     --font-size-l: 20px; /* header font size */
 
-    --padding-s: 4px; /* very small pdding */
+    --padding-s: 4px; /* very small padding */
     --padding-st: 6px; /* small padding */
     --padding-m: 8px; /* default padding */
     --padding-mt: 10px; /* long padding */
@@ -108,10 +118,11 @@ And also define a class in which new values for css variables will be specified
 ```
 
 ## Demo
+
 - [git](https://github.com/max36895/umchat_demo)
 - [codesandbox](https://codesandbox.io/s/github/max36895/umchat_demo)
 
-Помощь и поддержка проекта
-------
+## Помощь и поддержка проекта
+
 Любая помощь и поддержка приветствуется.
 Если будут найдены различные ошибки или предложения по улучшению, то смело пишите на почту: maximco36895@yandex.ru

@@ -1,3 +1,12 @@
+// @ts-expect-error
+import { Request as BaseRequest, AppContext } from 'umbot';
+
+const appContext = new AppContext();
+appContext.setLogger({
+    error: () => {},
+    warn: () => {},
+    maskSecrets: false,
+});
 /**
  * Отправка запросов
  * @module
@@ -23,34 +32,15 @@ export interface IRequestSend<T> {
  *
  * @class Request
  */
-export default class Request {
-    /**
-     * Адрес, на который отправляется запрос.
-     */
-    public url: string | null;
-    /**
-     * Post параметры запроса.
-     */
-    public post: any;
-    /**
-     * Максимально время, за которое должен быть получен ответ. В мсек.
-     * @default 5000
-     */
-    public maxTimeQuery: number | null;
-
-    /**
-     * Ошибки при выполнении запроса.
-     */
-    private _error: string | null;
-
+export default class Request extends BaseRequest {
     /**
      * Request constructor.
      */
     public constructor() {
+        super(appContext);
         this.url = null;
         this.post = null;
         this.maxTimeQuery = 5000;
-        this._error = null;
     }
 
     /**
@@ -62,61 +52,6 @@ export default class Request {
      * @api
      */
     public async send<T>(url: string | null = null): Promise<IRequestSend<T>> {
-        if (url) {
-            this.url = url;
-        }
-
-        this._error = null;
-        const data: any = await this._run();
-        if (this._error) {
-            return {status: false, data: null, err: this._error};
-        }
-        return {status: true, data};
-    }
-
-    /**
-     * Начинаем отправку fetch запроса.
-     * В случае успеха возвращаем содержимое запроса, в противном случае null.
-     *
-     * @return Promise<any>
-     */
-    private async _run<T>(): Promise<T | string | null> {
-        if (this.url) {
-            try {
-                const response = await fetch(this.url, this._getOptions());
-                if (response.ok) {
-                    return await response.json();
-                }
-            } catch (e) {
-                this._error = `Произошла ошибка при получении данных:\n${(e as Error).message}`;
-            }
-            this._error = "Не удалось получить данные с " + this.url;
-        } else {
-            this._error = "Не указан url!";
-        }
-        return null;
-    }
-
-    /**
-     * Получение корректного параметра для отправки запроса.
-     * @return RequestInit
-     * @private
-     */
-    protected _getOptions(): RequestInit | undefined {
-        const options: RequestInit = {};
-
-        if (this.maxTimeQuery) {
-            const controller = new AbortController();
-            const signal: AbortSignal = controller.signal;
-            setTimeout(() => controller.abort(), this.maxTimeQuery);
-            options.signal = signal;
-        }
-
-        if (this.post) {
-            options.method = "POST";
-            options.body = JSON.stringify(this.post);
-        }
-
-        return options;
+        return super.send(url);
     }
 }

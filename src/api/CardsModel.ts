@@ -1,6 +1,8 @@
-import {ICardButton, ICards, IImage, IList, TCardType} from "../interfaces/ICards";
-import Request, {IRequestSend} from "./Request";
-import {getUserData, setUserData} from "../utils/storage";
+import { ICardButton, ICards, IImage, IList, TCardType } from '../interfaces/ICards';
+import Request, { IRequestSend } from './Request';
+import { getUserData, setUserData } from '../utils/storage';
+
+const REPLACE_REG = /[^\x00-\x7Fа-яА-Я]/g;
 
 /**
  * Интерфейс кнопки.
@@ -91,7 +93,7 @@ export interface ICardsModelResponse {
                  * Текст заголовка списка
                  */
                 text: string;
-            }
+            };
             /**
              * Список отображаемых элементов. Нужно указывать если установлен режим ItemsList
              */
@@ -108,8 +110,8 @@ export interface ICardsModelResponse {
                  * Кнопка
                  */
                 button: IButton;
-            }
-        },
+            };
+        };
     };
     /**
      * Данные для сохранения в локальном хранилище
@@ -125,7 +127,11 @@ export interface IRequestParser {
      * @param user_id Идентификатор пользователя
      * @returns
      */
-    sendRequest: (value: string, messageId: number, user_id?: string | number) => object;
+    sendRequest: (
+        value: string,
+        messageId: number,
+        user_id?: string | number,
+    ) => Record<string, unknown>;
     /**
      * Обработка полученного результата с сервера, для приведения его к корректному для работы виду
      * @param res
@@ -164,11 +170,12 @@ export default class CardsModel {
     constructor(url: string, userId: string | number, parser?: IRequestParser, cards?: ICards[]) {
         this._req = new Request();
         this._botUrl = url;
-        this._userId = userId
+        this._userId = userId;
         this.setParser(parser);
         if (cards) {
             this.setCards(cards);
-            this.setMessageId((cards[cards.length - 1].messageId / 2) + 1);
+            const maxId = Math.max(...cards.map((c) => c.messageId));
+            this.setMessageId(Math.floor(maxId / 2) + 1);
         }
     }
 
@@ -179,13 +186,13 @@ export default class CardsModel {
             this._parser = {
                 sendRequest: CardsModel.getDefaultSend,
                 getImage: CardsModel._getImage,
-                parseResponse(res) {
+                parseResponse(res): ICardsModelResponse {
                     if ((res as ICardsModelResponse)?.user_state_update) {
                         setUserData((res as ICardsModelResponse).user_state_update);
                     }
                     return res as ICardsModelResponse;
-                }
-            }
+                },
+            };
         }
     }
 
@@ -193,11 +200,11 @@ export default class CardsModel {
         if (userId) {
             this._userId = userId;
         } else {
-            console.warn('CardModel.setUserId(): Incorrect userId')
+            console.warn('CardModel.setUserId(): Incorrect userId');
         }
     }
 
-    setUrl(url: string) {
+    setUrl(url: string): void {
         this._botUrl = url;
     }
 
@@ -210,80 +217,88 @@ export default class CardsModel {
             // Пока есть сложности с синтезом речи. Поэтому читаем просто текст как сможем,
             // или берем tts если нет text, и будь что будет
             // todo придумать потом что-то
-            const tts = response.data?.response.text || response.data?.response.tts || "";
+            const tts = response.data?.response.text || response.data?.response.tts || '';
             // remove all smile
-            return tts.replace(/[^\x00-\x7Fа-яА-Я]/g, '');
+            return tts.replace(REPLACE_REG, '');
         }
-        return "";
+        return '';
     }
 
     addUserText(value: string): ICards[] {
-        return CardsModel._addCard(this._cards, {text: value, messageId: (userMsgCount * 2 - 1)});
+        return CardsModel._addCard(this._cards, { text: value, messageId: userMsgCount * 2 - 1 });
     }
 
-    addBotText(
-        response: IRequestSend<ICardsModelResponse>
-    ): ICards[] {
-        if (response.status) {
-            const res = this._parser.parseResponse(response.data)?.response;
-            if (res) {
-                let buttons: ICardButton[] | undefined;
-                if (res.buttons) {
-                    res.buttons.forEach((btn) => {
-                        if (btn.hide) {
-                            if (!buttons) {
-                                buttons = [];
-                            }
-                            buttons.push(CardsModel._getButton(btn) as IButton);
+    addBotText(response: IRequestSend<ICardsModelResponse>): ICards[] {
+        if (!response.status) {
+            const config: ITextConfig = {
+                type: 'error',
+                text: 'Произошла ошибка!\n' + response.err,
+                isBot: true,
+                messageId: (userMsgCount - 1) * 2,
+            };
+            return CardsModel._addCard(this._cards, config);
+        }
+        const res = this._parser.parseResponse(response.data)?.response;
+        if (res) {
+            let buttons: ICardButton[] | undefined;
+            if (res.buttons) {
+                res.buttons.forEach((btn) => {
+                    if (btn.hide) {
+                        if (!buttons) {
+                            buttons = [];
                         }
-                    });
-                }
-                const text = res.text || "";
-                const config: ITextConfig = {text, isBot: true, buttons, messageId: ((userMsgCount - 1) * 2)};
-                if (res.card) {
-                    if (res.card.type === 'BigImage') {
-                        config.type = 'card';
-                        config.image = {
-                            src: `url("${this._parser.getImage(res.card.image_id)}")`,
-                            title: res.card.title,
-                            description: res.card.description
-                        };
-                        if (res.card.button) {
-                            config.image.button = CardsModel._getButton(res.card.button);
-                        }
-                    } else {
-                        const images: IImage[] = [];
-                        res.card.items.forEach((item) => {
-                            images.push(
-                                {
-                                    src: `url("${this._parser.getImage(item.image_id, 'menu-list-x3')}")`,
-                                    title: item.title,
-                                    description: item.description,
-                                    button: CardsModel._getButton(item.button)
-                                }
-                            );
+                        buttons.push(CardsModel._getButton(btn) as IButton);
+                    }
+                });
+            }
+            const text = res.text || '';
+            const config: ITextConfig = {
+                text,
+                isBot: true,
+                buttons,
+                messageId: (userMsgCount - 1) * 2,
+            };
+            if (res.card) {
+                if (res.card.type === 'BigImage') {
+                    config.type = 'card';
+                    config.image = {
+                        src: `url("${this._parser.getImage(res.card.image_id)}")`,
+                        title: res.card.title,
+                        description: res.card.description,
+                    };
+                    if (res.card.button) {
+                        config.image.button = CardsModel._getButton(res.card.button);
+                    }
+                } else {
+                    const images: IImage[] = [];
+                    res.card.items.forEach((item) => {
+                        images.push({
+                            src: `url("${this._parser.getImage(item.image_id, 'menu-list-x3')}")`,
+                            title: item.title,
+                            description: item.description,
+                            button: CardsModel._getButton(item.button),
                         });
-                        config.type = 'list';
-                        config.list = {
-                            title: res.card.header?.text,
-                            images
+                    });
+                    config.type = 'list';
+                    config.list = {
+                        title: res.card.header?.text,
+                        images,
+                    };
+                    if (res.card.footer) {
+                        config.list.footer = {
+                            text: res.card.footer.text,
+                            button: CardsModel._getButton(res.card.footer.button),
                         };
-                        if (res.card.footer) {
-                            config.list.footer = {
-                                text: res.card.footer.text,
-                                button: CardsModel._getButton(res.card.footer.button)
-                            };
-                        }
                     }
                 }
-                return CardsModel._addCard(this._cards, config);
             }
+            return CardsModel._addCard(this._cards, config);
         }
         const config: ITextConfig = {
             type: 'error',
             text: 'Произошла ошибка!\n' + response.err,
             isBot: true,
-            messageId: (userMsgCount - 1) * 2
+            messageId: (userMsgCount - 1) * 2,
         };
         return CardsModel._addCard(this._cards, config);
     }
@@ -305,43 +320,47 @@ export default class CardsModel {
         this._cards = cards;
     }
 
-    private static getDefaultSend(value: string, messageId: number, userId: string | number = 'test'): object {
+    private static getDefaultSend(
+        value: string,
+        messageId: number,
+        userId: string | number = 'test',
+    ): Record<string, unknown> {
         return {
             meta: {
-                locale: "ru-Ru",
-                timezone: "UTC",
-                client_id: "web-site",
+                locale: 'ru-Ru',
+                timezone: 'UTC',
+                client_id: 'web-site',
                 interfaces: {
                     screen: {},
                     payments: null,
-                    account_linking: null
-                }
+                    account_linking: null,
+                },
             },
             session: {
                 message_id: messageId - 1,
-                session_id: "web-site",
-                skill_id: "web-site_id",
+                session_id: 'web-site',
+                skill_id: 'web-site_id',
                 user_id: userId,
                 user: {
-                    user_id: userId
+                    user_id: userId,
                 },
                 application: {
-                    application_id: userId
+                    application_id: userId,
                 },
-                new: messageId === 1
+                new: messageId === 1,
             },
             request: {
                 command: value.toLowerCase(),
                 original_utterance: value,
                 nlu: {},
-                type: "SimpleUtterance"
+                type: 'SimpleUtterance',
             },
             state: {
                 session: {},
                 user: getUserData(),
-                application: {}
+                application: {},
             },
-            version: "1.0"
+            version: '1.0',
         };
     }
 
@@ -349,7 +368,7 @@ export default class CardsModel {
         if (button) {
             return {
                 title: button.text || button.title,
-                url: button.url
+                url: button.url,
             };
         }
     }
@@ -370,8 +389,11 @@ export default class CardsModel {
             cardType: config.type || 'text',
             image: config.image,
             list: config.list,
-            buttons: config.buttons
+            buttons: config.buttons,
         });
+        if (cards.length > 100) {
+            return cards.slice(cards.length - 100);
+        }
         return cards;
     }
 }

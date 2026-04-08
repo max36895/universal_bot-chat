@@ -1,4 +1,4 @@
-import {ICards} from "../interfaces/ICards";
+import { ICards } from '../interfaces/ICards';
 
 const KEY = 'um-chat_cards';
 const KEY_DATA = 'um-chat_data';
@@ -7,8 +7,6 @@ const LIMIT = 100;
 function setUserData(data?: object): void {
     if (data) {
         localStorage.setItem(KEY_DATA, JSON.stringify(data));
-    } else {
-        clearCardsData();
     }
 }
 
@@ -55,4 +53,4 @@ function clearCardsData(): void {
     localStorage.removeItem(KEY);
 }
 
-export {setCardsData, getCardsData, clearCardsData, setUserData, getUserData, clearUserData};
+export { setCardsData, getCardsData, clearCardsData, setUserData, getUserData, clearUserData };

@@ -8,6 +8,18 @@ interface IPromiseRes {
     reject: (err: string) => void;
 }
 
+interface IResult {
+    [index: number]: {
+        transcript: string;
+    };
+    isFinal: boolean;
+}
+
+interface IVoiceResult {
+    results: IResult[];
+    resultIndex: number;
+}
+
 export default class Voice {
     // @ts-ignore
     private readonly _recognizer: SpeechRecognition;
@@ -29,10 +41,10 @@ export default class Voice {
 
         // Ставим опцию, чтобы распознавание началось ещё до того, как пользователь закончит говорить
         this._recognizer.interimResults = true;
-        this._recognizer.lang = "ru-Ru";
+        this._recognizer.lang = 'ru-Ru';
         this._recognizer.maxAlternatives = 1;
 
-        this._recognizer.onresult = (event: any) => {
+        this._recognizer.onresult = (event: IVoiceResult): void => {
             const result = event.results[event.resultIndex];
             if (result.isFinal) {
                 if (this._speechPromise) {
@@ -46,15 +58,15 @@ export default class Voice {
             }
         };
 
-        this._recognizer.onend = () => {
+        this._recognizer.onend = (): void => {
             if (this._speechPromise) {
-                this._speechPromise.resolve("");
+                this._speechPromise.resolve('');
                 this._speechPromise = null;
             }
         };
 
         this._synth = speechSynthesis;
-        this._speechUtterance = new SpeechSynthesisUtterance("");
+        this._speechUtterance = new SpeechSynthesisUtterance('');
         const voices = this._synth.getVoices();
         let index = 0;
         for (let i = 0; i < voices.length; i++) {
@@ -107,7 +119,7 @@ export default class Voice {
         return new Promise((resolve, reject) => {
             this._speechPromise = {
                 resolve,
-                reject
+                reject,
             };
         });
     }

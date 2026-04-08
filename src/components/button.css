@@ -106,7 +106,7 @@
 }
 
 .um-Button_size-s::before {
-    content: "\200b";
+    content: '\200b';
     line-height: calc(var(--inline-height-s) - 2px);
 }
 
@@ -132,7 +132,7 @@
 }
 
 .um-Button_size-m::before {
-    content: "\200b";
+    content: '\200b';
     line-height: calc(var(--inline-height-m) - 2px);
 }
 
@@ -162,7 +162,7 @@
 }
 
 .um-Button_size-l::before {
-    content: "\200b";
+    content: '\200b';
     line-height: calc(var(--inline-height-l) - 2px);
 }
 

@@ -1,30 +1,24 @@
 {
-  "include": [
-    "./src/**/*"
-  ],
-  "compilerOptions": {
-    "strict": true,
-    "esModuleInterop": true,
-    "target": "es2020",
-    "lib": [
-      "dom",
-      "es2020"
-    ],
-    "jsx": "react-jsx",
-    "allowJs": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "declaration": true,
-    "declarationDir": "types",
-	"removeComments": true,
-    "sourceMap": false,
-    "outDir": "dist",
-    "emitDeclarationOnly": true
-  }
+    "include": ["./src/**/*"],
+    "compilerOptions": {
+        "strict": true,
+        "esModuleInterop": true,
+        "target": "es2023",
+        "lib": ["dom", "es2023"],
+        "jsx": "react-jsx",
+        "allowJs": true,
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "module": "esnext",
+        "moduleResolution": "nodenext",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "removeComments": false,
+        "sourceMap": false,
+        "emitDeclarationOnly": false
+    }
 }

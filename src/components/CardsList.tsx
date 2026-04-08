@@ -1,8 +1,8 @@
-import {ReactElement, useRef, useEffect, RefObject, memo} from "react";
-import Button from "./Button";
-import Card from "./Card";
-import {ICardButton, ICards} from "../interfaces/ICards";
-import "./cardsList.css";
+import { ReactElement, useRef, useEffect, RefObject, memo } from 'react';
+import Button from './Button';
+import Card from './Card';
+import { ICardButton, ICards } from '../interfaces/ICards';
+import './cardsList.css';
 
 interface ICardsListProps {
     /**
@@ -28,7 +28,7 @@ interface ICardsListProps {
  */
 const CardsList = (props: ICardsListProps): ReactElement => {
     const scrollRef = useRef<HTMLDivElement>();
-    const {cards = []} = props;
+    const { cards = [] } = props;
     let buttons: ICardButton[] | undefined;
     if (cards.length) {
         buttons = cards[cards.length - 1].buttons;
@@ -36,23 +36,31 @@ const CardsList = (props: ICardsListProps): ReactElement => {
 
     useEffect(() => {
         if (scrollRef.current) {
-            scrollRef.current.scrollTop = Math.max(scrollRef.current.scrollHeight - scrollRef.current.clientHeight, 0);
+            scrollRef.current.scrollTop = Math.max(
+                scrollRef.current.scrollHeight - scrollRef.current.clientHeight,
+                0,
+            );
         }
     }, [props.cards?.length]);
 
     return (
         <div className={`um-CardsList${buttons ? ' um-CardsList_bottom' : ''}`}>
-            <div className="um-CardsList_wrapper um-scrollbar" ref={scrollRef as RefObject<HTMLDivElement>}>
+            <div
+                className="um-CardsList_wrapper um-scrollbar"
+                ref={scrollRef as RefObject<HTMLDivElement>}
+            >
                 {cards.map((card) => {
                     return (
-                        <Card key={card.messageId}
-                              text={card.text}
-                              date={card.date}
-                              style={card.isBot ? 'bot' : 'user'}
-                              type={card.cardType}
-                              image={card.image}
-                              list={card.list}
-                              onSend={props.onSend}/>
+                        <Card
+                            key={card.messageId}
+                            text={card.text}
+                            date={card.date}
+                            style={card.isBot ? 'bot' : 'user'}
+                            type={card.cardType}
+                            image={card.image}
+                            list={card.list}
+                            onSend={props.onSend}
+                        />
                     );
                 })}
             </div>
@@ -76,6 +84,6 @@ const CardsList = (props: ICardsListProps): ReactElement => {
             )}
         </div>
     );
-}
+};
 
 export default memo(CardsList);
