@@ -1,6 +1,6 @@
 {
     "name": "umchat",
-    "version": "1.0.0",
+    "version": "1.1.1",
     "description": "🎙️ Universal chat widget for websites — connect any webhook (Alice, ChatGPT, custom bot) with voice input/output and smart cards",
     "keywords": [
         "chat",
@@ -45,7 +45,8 @@
         "deploy": "npm run build && npm publish",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
-        "prettier": "prettier --write ."
+        "prettier": "prettier --write .",
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {},
     "devDependencies": {
@@ -69,7 +70,7 @@
         "shx": "^0.3.2",
         "tslib": "^2.8.1",
         "typescript": "^5.9.3",
-        "umbot": "^3.0.4"
+        "umbot": "^3.0.0"
     },
     "peerDependencies": {
         "react": "^18.0.0",

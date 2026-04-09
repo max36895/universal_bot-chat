@@ -1,10 +1,10 @@
 function getShortDate(date: Date): string {
-    return `${date.getHours()}:${date.getMinutes() < 10 ? "0" : ""}${date.getMinutes()}`;
+    return `${date.getHours()}:${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
 }
 
 function getLongDate(date: Date): string {
     const day = date.getDate();
-    const month = (date.getMonth() < 9 ? "0" : "") + (date.getMonth() + 1);
+    const month = (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1);
     return `${day}.${month}`;
 }
 
@@ -31,7 +31,7 @@ function getDate(date?: number): string {
         }
         return getFullDate(argDate);
     }
-    return "";
+    return '';
 }
 
 export { getDate };

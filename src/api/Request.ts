@@ -31,7 +31,7 @@ export default class Request {
     /**
      * Post параметры запроса.
      */
-    public post: any;
+    public post: unknown;
     /**
      * Максимально время, за которое должен быть получен ответ. В мсек.
      * @default 5000
@@ -67,7 +67,7 @@ export default class Request {
         }
 
         this._error = null;
-        const data: any = await this._run();
+        const data: T = (await this._run<T>()) as T;
         if (this._error) {
             return { status: false, data: null, err: this._error };
         }
@@ -90,9 +90,9 @@ export default class Request {
             } catch (e) {
                 this._error = `Произошла ошибка при получении данных:\n${(e as Error).message}`;
             }
-            this._error = "Не удалось получить данные с " + this.url;
+            this._error = 'Не удалось получить данные с ' + this.url;
         } else {
-            this._error = "Не указан url!";
+            this._error = 'Не указан url!';
         }
         return null;
     }
@@ -113,7 +113,7 @@ export default class Request {
         }
 
         if (this.post) {
-            options.method = "POST";
+            options.method = 'POST';
             options.body = JSON.stringify(this.post);
         }
 

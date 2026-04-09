@@ -1,7 +1,7 @@
-import { ReactElement, CSSProperties, memo } from "react";
-import { ICardButton, IImage, IList, TCardType } from "../interfaces/ICards";
-import { getDate } from "../utils/date";
-import "./card.css";
+import { ReactElement, CSSProperties, memo } from 'react';
+import { ICardButton, IImage, IList, TCardType } from '../interfaces/ICards';
+import { getDate } from '../utils/date';
+import './card.css';
 
 interface ICardProps {
     /**
@@ -28,7 +28,7 @@ interface ICardProps {
     /**
      * Стиль карточки. Влияет на расположение карточки
      */
-    style?: "bot" | "user";
+    style?: 'bot' | 'user';
     /**
      * Событие обработки определенного действия
      * @param value
@@ -50,11 +50,15 @@ function CardTypeCard(props: ICardProps): ReactElement {
     if (props.image) {
         const style: CSSProperties = { backgroundImage: props.image.src };
         return (
-            <div className={`um-Card um-Card_type-card ${props.image.button ? "um-clickable" : ""}`}>
+            <div
+                className={`um-Card um-Card_type-card ${props.image.button ? 'um-clickable' : ''}`}
+            >
                 <div className="um-Card_big-image um-Card_image" style={style} />
                 <div className="um-Card_card-info">
                     <p className="um-Card_card-title um-Card_text">{props.image.title}</p>
-                    <p className="um-Card_card-description um-Card_text">{props.image.description}</p>
+                    <p className="um-Card_card-description um-Card_text">
+                        {props.image.description}
+                    </p>
                 </div>
             </div>
         );
@@ -72,7 +76,7 @@ function CardTypeList(props: ICardProps): ReactElement {
                         const style: CSSProperties = { backgroundImage: image.src };
                         return (
                             <div
-                                className={`um-Card_list-item ${image.button ? "um-clickable" : ""}`}
+                                className={`um-Card_list-item ${image.button ? 'um-clickable' : ''}`}
                                 onClick={() => {
                                     if (image.button && props.onSend) {
                                         props.onSend(image.button);
@@ -80,10 +84,17 @@ function CardTypeList(props: ICardProps): ReactElement {
                                 }}
                                 key={index}
                             >
-                                <div className="um-Card_list-item-image um-Card_image" style={style} />
+                                <div
+                                    className="um-Card_list-item-image um-Card_image"
+                                    style={style}
+                                />
                                 <div className="um-Card_list-item-info">
-                                    <p className="um-Card_list-item-title um-Card_text">{image.title}</p>
-                                    <p className="um-Card_list-item-description um-Card_text">{image.description}</p>
+                                    <p className="um-Card_list-item-title um-Card_text">
+                                        {image.title}
+                                    </p>
+                                    <p className="um-Card_list-item-description um-Card_text">
+                                        {image.description}
+                                    </p>
                                 </div>
                             </div>
                         );
@@ -114,11 +125,11 @@ function CardTypeList(props: ICardProps): ReactElement {
  * @returns
  */
 const Card = (props: ICardProps): ReactElement => {
-    const { type = "text" } = props;
-    if (type === "list") {
+    const { type = 'text' } = props;
+    if (type === 'list') {
         return <CardTypeList {...props} />;
     }
-    if (type === "card") {
+    if (type === 'card') {
         return <CardTypeCard {...props} />;
     }
     return <CardTypeText {...props} />;

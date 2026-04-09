@@ -1,6 +1,6 @@
-import { ICardButton, ICards, IImage, IList, TCardType } from "../interfaces/ICards";
-import Request, { IRequestSend } from "./Request";
-import { getUserData, setUserData } from "../utils/storage";
+import { ICardButton, ICards, IImage, IList, TCardType } from '../interfaces/ICards';
+import Request, { IRequestSend } from './Request';
+import { getUserData, setUserData } from '../utils/storage';
 
 const REPLACE_REG = /[^\x00-\x7Fа-яА-Я]/g;
 
@@ -67,7 +67,7 @@ export interface ICardsModelResponse {
             /**
              * Режим отображения карточки. Картинка(BigImage) или список(ItemsList)
              */
-            type: "BigImage" | "ItemsList";
+            type: 'BigImage' | 'ItemsList';
             /**
              * Идентификатор картинки. Нужно указывать если установлен режим BigImage
              */
@@ -200,7 +200,7 @@ export default class CardsModel {
         if (userId) {
             this._userId = userId;
         } else {
-            console.warn("CardModel.setUserId(): Incorrect userId");
+            console.warn('CardModel.setUserId(): Incorrect userId');
         }
     }
 
@@ -228,72 +228,82 @@ export default class CardsModel {
         return CardsModel._addCard(this._cards, { text: value, messageId: userMsgCount * 2 - 1 });
     }
 
-    addBotText(response: IRequestSend<ICardsModelResponse>): ICards[] {
-        if (response.status) {
-            const res = this._parser.parseResponse(response.data)?.response;
-            if (res) {
-                let buttons: ICardButton[] | undefined;
-                if (res.buttons) {
-                    res.buttons.forEach((btn) => {
-                        if (btn.hide) {
-                            if (!buttons) {
-                                buttons = [];
-                            }
-                            buttons.push(CardsModel._getButton(btn) as IButton);
-                        }
-                    });
-                }
-                const text = res.text || "";
-                const config: ITextConfig = { text, isBot: true, buttons, messageId: (userMsgCount - 1) * 2 };
-                if (res.card) {
-                    if (res.card.type === "BigImage") {
-                        config.type = "card";
-                        config.image = {
-                            src: `url("${this._parser.getImage(res.card.image_id)}")`,
-                            title: res.card.title,
-                            description: res.card.description,
-                        };
-                        if (res.card.button) {
-                            config.image.button = CardsModel._getButton(res.card.button);
-                        }
-                    } else {
-                        const images: IImage[] = [];
-                        res.card.items.forEach((item) => {
-                            images.push({
-                                src: `url("${this._parser.getImage(item.image_id, "menu-list-x3")}")`,
-                                title: item.title,
-                                description: item.description,
-                                button: CardsModel._getButton(item.button),
-                            });
-                        });
-                        config.type = "list";
-                        config.list = {
-                            title: res.card.header?.text,
-                            images,
-                        };
-                        if (res.card.footer) {
-                            config.list.footer = {
-                                text: res.card.footer.text,
-                                button: CardsModel._getButton(res.card.footer.button),
-                            };
-                        }
-                    }
-                }
-                return CardsModel._addCard(this._cards, config);
-            }
-        }
+    private getError(response: IRequestSend<ICardsModelResponse>): ICards[] {
         const config: ITextConfig = {
-            type: "error",
-            text: "Произошла ошибка!\n" + response.err,
+            type: 'error',
+            text: 'Произошла ошибка!\n' + response.err,
             isBot: true,
             messageId: (userMsgCount - 1) * 2,
         };
         return CardsModel._addCard(this._cards, config);
     }
 
+    addBotText(response: IRequestSend<ICardsModelResponse>): ICards[] {
+        if (!response.status) {
+            return this.getError(response);
+        }
+        const res = this._parser.parseResponse(response.data)?.response;
+        if (res) {
+            let buttons: ICardButton[] | undefined;
+            if (res.buttons) {
+                res.buttons.forEach((btn) => {
+                    if (btn.hide) {
+                        if (!buttons) {
+                            buttons = [];
+                        }
+                        buttons.push(CardsModel._getButton(btn) as IButton);
+                    }
+                });
+            }
+            const text = res.text || '';
+            const config: ITextConfig = {
+                text,
+                isBot: true,
+                buttons,
+                messageId: (userMsgCount - 1) * 2,
+            };
+            if (res.card) {
+                if (res.card.type === 'BigImage') {
+                    config.type = 'card';
+                    config.image = {
+                        src: `url("${this._parser.getImage(res.card.image_id)}")`,
+                        title: res.card.title,
+                        description: res.card.description,
+                    };
+                    if (res.card.button) {
+                        config.image.button = CardsModel._getButton(res.card.button);
+                    }
+                } else {
+                    const images: IImage[] = [];
+                    res.card.items.forEach((item) => {
+                        images.push({
+                            src: `url("${this._parser.getImage(item.image_id, 'menu-list-x3')}")`,
+                            title: item.title,
+                            description: item.description,
+                            button: CardsModel._getButton(item.button),
+                        });
+                    });
+                    config.type = 'list';
+                    config.list = {
+                        title: res.card.header?.text,
+                        images,
+                    };
+                    if (res.card.footer) {
+                        config.list.footer = {
+                            text: res.card.footer.text,
+                            button: CardsModel._getButton(res.card.footer.button),
+                        };
+                    }
+                }
+            }
+            return CardsModel._addCard(this._cards, config);
+        }
+        return this.getError(response);
+    }
+
     send(value: string): Promise<IRequestSend<ICardsModelResponse>> {
         if (!this._botUrl) {
-            return Promise.reject("Please added bot url address");
+            return Promise.reject('Please added bot url address');
         }
         this._req.post = this._parser.sendRequest(value, userMsgCount, this._userId);
         userMsgCount++;
@@ -361,11 +371,11 @@ export default class CardsModel {
         }
     }
 
-    private static _getImage(token?: string, size: string = "one-x3"): string {
+    private static _getImage(token?: string, size: string = 'one-x3'): string {
         if (token) {
             return `https://avatars.mds.yandex.net/get-dialogs-skill-card/${token}/${size}`;
         }
-        return "";
+        return '';
     }
 
     private static _addCard(cards: ICards[], config: ITextConfig): ICards[] {
@@ -374,7 +384,7 @@ export default class CardsModel {
             date: Date.now(),
             messageId: config.messageId,
             isBot: config.isBot || false,
-            cardType: config.type || "text",
+            cardType: config.type || 'text',
             image: config.image,
             list: config.list,
             buttons: config.buttons,

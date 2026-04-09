@@ -1,7 +1,7 @@
-import { ICards } from "../interfaces/ICards";
+import { ICards } from '../interfaces/ICards';
 
-const KEY = "um-chat_cards";
-const KEY_DATA = "um-chat_data";
+const KEY = 'um-chat_cards';
+const KEY_DATA = 'um-chat_data';
 const LIMIT = 100;
 
 function setUserData(data?: object): void {

@@ -13,19 +13,13 @@ npm i umchat
 To start a chat, use the UChat component, passing the options necessary for the correct operation
 
 ```tsx
-import { UMChat, IAppConfig } from "umchat";
+import { UMChat, IAppConfig } from 'umchat';
 function MyComponent() {
-  const config: IAppConfig = {
-    url: "...", // webhook for skill,
-    userId: "local_test",
-  };
-  return (
-    <UMChat
-      config={config}
-      panelTitle="skill name"
-      className="UMChat_absolute"
-    />
-  );
+    const config: IAppConfig = {
+        url: '...', // webhook for skill,
+        userId: 'local_test',
+    };
+    return <UMChat config={config} panelTitle="skill name" className="UMChat_absolute" />;
 }
 ```
 
@@ -40,14 +34,14 @@ npm start
 To get the userId, you can use the standard generation method, or use your own solution.
 
 ```tsx
-import { getUserId, IAppConfig } from "umchat";
+import { getUserId, IAppConfig } from 'umchat';
 
 function MyComponent() {
-  const config: IAppConfig = {
-    url: "...", // webhook for skill,
-    userId: getUserId(),
-  };
-  return <UMChat config={config} />;
+    const config: IAppConfig = {
+        url: '...', // webhook for skill,
+        userId: getUserId(),
+    };
+    return <UMChat config={config} />;
 }
 ```
 
