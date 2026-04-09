@@ -19,7 +19,7 @@
 
 .um-CardsList_wrapper::before,
 .um-CardsList_wrapper::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     right: 0;
@@ -50,7 +50,7 @@
 
 .um-CardsList_buttons-block::before,
 .um-CardsList_buttons-block::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     height: 100%;

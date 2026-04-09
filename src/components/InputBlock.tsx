@@ -1,17 +1,8 @@
-import {
-    ReactElement,
-    useEffect,
-    useState,
-    useRef,
-    RefObject,
-    KeyboardEvent,
-    memo,
-    useCallback,
-} from 'react';
-import Button from './Button';
-import Voice from '../api/Voice';
-import './inputBlock.css';
-import detection from '../utils/detection';
+import { ReactElement, useEffect, useState, useMemo, useRef, RefObject, KeyboardEvent, memo, useCallback } from "react";
+import Button from "./Button";
+import Voice from "../api/Voice";
+import "./inputBlock.css";
+import detection from "../utils/detection";
 
 interface IInputBlockProps {
     /**
@@ -67,8 +58,8 @@ const ICON_SEND = (
  */
 const InputBlock = (props: IInputBlockProps): ReactElement => {
     const inputRef = useRef<HTMLTextAreaElement>();
-    const [inputValue, setInputValue] = useState<string>('');
-    const [voice] = useState(() => new Voice());
+    const [inputValue, setInputValue] = useState<string>("");
+    const voice = useMemo(() => new Voice(), []);
     const [voiceIcon, setVoiceIcon] = useState(ICON_VOICE);
 
     useEffect(() => {
@@ -104,11 +95,11 @@ const InputBlock = (props: IInputBlockProps): ReactElement => {
         if (props.onSend) {
             props.onSend(value);
         }
-        setInputValue('');
+        setInputValue("");
     };
 
     const onClickHandler = useCallback(() => {
-        onSend(inputRef.current?.value || '');
+        onSend(inputRef.current?.value || "");
     }, []);
 
     const inputHandler = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -153,7 +144,7 @@ const InputBlock = (props: IInputBlockProps): ReactElement => {
                 <Button
                     size="m"
                     title="Отправить"
-                    readOnly={props.readOnly || inputValue === ''}
+                    readOnly={props.readOnly || inputValue === ""}
                     icon={ICON_SEND}
                     onClick={onClickHandler}
                 />

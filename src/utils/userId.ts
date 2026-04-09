@@ -1,12 +1,12 @@
-import { clearUserData, clearCardsData } from './storage';
+import { clearUserData, clearCardsData } from "./storage";
 
-const KEY = 'um-chat_user-id';
+const KEY = "um-chat_user-id";
 
 function generateUserId(): string {
     const getHash = (rad: number = 1000): string => {
-        return Math.floor(Math.random() * rad) + '';
+        return Math.floor(Math.random() * rad) + "";
     };
-    return getHash(10e5) + '/' + Date.now() + getHash();
+    return getHash(10e5) + "/" + Date.now() + getHash();
 }
 
 /**

@@ -1,8 +1,8 @@
-import { ReactElement, useRef, useEffect, RefObject, memo } from 'react';
-import Button from './Button';
-import Card from './Card';
-import { ICardButton, ICards } from '../interfaces/ICards';
-import './cardsList.css';
+import { ReactElement, useRef, useEffect, RefObject, memo } from "react";
+import Button from "./Button";
+import Card from "./Card";
+import { ICardButton, ICards } from "../interfaces/ICards";
+import "./cardsList.css";
 
 interface ICardsListProps {
     /**
@@ -44,18 +44,15 @@ const CardsList = (props: ICardsListProps): ReactElement => {
     }, [props.cards?.length]);
 
     return (
-        <div className={`um-CardsList${buttons ? ' um-CardsList_bottom' : ''}`}>
-            <div
-                className="um-CardsList_wrapper um-scrollbar"
-                ref={scrollRef as RefObject<HTMLDivElement>}
-            >
+        <div className={`um-CardsList${buttons ? " um-CardsList_bottom" : ""}`}>
+            <div className="um-CardsList_wrapper um-scrollbar" ref={scrollRef as RefObject<HTMLDivElement>}>
                 {cards.map((card) => {
                     return (
                         <Card
                             key={card.messageId}
                             text={card.text}
                             date={card.date}
-                            style={card.isBot ? 'bot' : 'user'}
+                            style={card.isBot ? "bot" : "user"}
                             type={card.cardType}
                             image={card.image}
                             list={card.list}

@@ -1,5 +1,5 @@
-import { ReactElement, ReactNode, memo } from 'react';
-import './panel.css';
+import { ReactElement, ReactNode, memo } from "react";
+import "./panel.css";
 
 interface IPanelProps {
     /**
@@ -32,7 +32,7 @@ interface IPanelProps {
  */
 const Panel = (props: IPanelProps): ReactElement => {
     return (
-        <div className={`um-Panel ${props.className || ''}`}>
+        <div className={`um-Panel ${props.className || ""}`}>
             <div className="um-Panel_header">
                 <span className="um-Panel_header-caption">{props.caption}</span>
                 <i className="um-Panel_header_close" onClick={props.onClose}>
@@ -43,11 +43,7 @@ const Panel = (props: IPanelProps): ReactElement => {
                         viewBox="0 0 25 25"
                         fill="none"
                     >
-                        <path
-                            d="M18 7L7 18M7 7L18 18"
-                            stroke="var(--contrast_text_color)"
-                            strokeWidth="1.2"
-                        />
+                        <path d="M18 7L7 18M7 7L18 18" stroke="var(--contrast_text_color)" strokeWidth="1.2" />
                     </svg>
                 </i>
             </div>

@@ -1,15 +1,15 @@
-import { ReactElement, useState, useRef, useEffect, useCallback, Ref, memo } from 'react';
-import Button, { TButtonSize, TButtonViewMode, TButtonStyle } from './Button';
-import Panel from './Panel';
-import Popup from './Popup';
-import InputBlock from './InputBlock';
-import CardsList from './CardsList';
-import { ICardButton, ICards } from '../interfaces/ICards';
-import CardsModel, { IRequestParser } from '../api/CardsModel';
-import detection from '../utils/detection';
-import { setCardsData as defaultSetData, getCardsData as defaultGetData } from '../utils/storage';
-import Voice from '../api/Voice';
-import './umChat.css';
+import { ReactElement, useState, useRef, useMemo, useEffect, useCallback, LegacyRef, memo } from "react";
+import Button, { TButtonSize, TButtonViewMode, TButtonStyle } from "./Button";
+import Panel from "./Panel";
+import Popup from "./Popup";
+import InputBlock from "./InputBlock";
+import CardsList from "./CardsList";
+import { ICardButton, ICards } from "../interfaces/ICards";
+import CardsModel, { IRequestParser } from "../api/CardsModel";
+import detection from "../utils/detection";
+import { setCardsData as defaultSetData, getCardsData as defaultGetData } from "../utils/storage";
+import Voice from "../api/Voice";
+import "./umChat.css";
 
 interface IDataHandlers<T> {
     /**
@@ -148,28 +148,27 @@ const UMChat = (props: IUMChatProps): ReactElement => {
     const [popupVisible, setPopupVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [readOnly, setReadOnly] = useState<boolean>(false);
-    const [voice] = useState<Voice>(() => new Voice());
+    const voice = useMemo<Voice>(() => new Voice(), []);
     const buttonRef = useRef<HTMLButtonElement>();
     const {
         buttonIcon = ICON_MESSAGE,
-        buttonSize = 'l',
+        buttonSize = "l",
         isVoiceControl = true,
         isSavedData = true,
-        theme = 'default',
+        theme = "default",
         buttonViewMode,
         buttonStyle,
         buttonCaption,
     } = props;
     const { setData = defaultSetData, getData = defaultGetData } = props.config.dataHandlers || {};
-    const [cardsModel] = useState<CardsModel>(
-        () =>
-            new CardsModel(
-                props.config.url,
-                props.config.userId || '',
-                props.config.requestParser,
-                getItems(isSavedData, getData),
-            ),
-    );
+    const cardsModel = useMemo<CardsModel>(() => {
+        return new CardsModel(
+            props.config.url,
+            props.config.userId || "",
+            props.config.requestParser,
+            getItems(isSavedData, getData)
+        );
+    }, []);
     const { width: panelWidth = 350, height: panelHeight = 500 } = props.panelSize || {};
 
     useEffect(() => {
@@ -184,9 +183,9 @@ const UMChat = (props: IUMChatProps): ReactElement => {
         cardsModel.setParser(props.config.requestParser);
     }, [props.config.requestParser]);
 
-    const toggleHandler = () => {
+    const toggleHandler = useCallback(() => {
         setPopupVisible(!popupVisible);
-    };
+    }, [popupVisible]);
 
     const sendHandler = useCallback((value: string) => {
         if (value.trim()) {
@@ -221,23 +220,23 @@ const UMChat = (props: IUMChatProps): ReactElement => {
     const sendCardHandler = useCallback((value: ICardButton): void => {
         voice.speakStop();
         if (value.url) {
-            window.open(value.url, '_blank');
+            window.open(value.url, "_blank");
         } else {
             sendHandler(value.title);
         }
     }, []);
 
-    let classes = 'UMChat UMChat_themes-' + theme;
+    let classes = "UMChat UMChat_themes-" + theme;
     if (detection.isWindows) {
-        classes += ' um-is-windows';
+        classes += " um-is-windows";
     }
     if (detection.isMobile) {
-        classes += ' um-is-mobile';
+        classes += " um-is-mobile";
     } else {
-        classes += ' um-is-hovered';
+        classes += " um-is-hovered";
     }
     if (detection.isMac) {
-        classes += ' um-is-mac';
+        classes += " um-is-mac";
     }
     if (props.className) {
         classes += ` ${props.className}`;
@@ -255,12 +254,7 @@ const UMChat = (props: IUMChatProps): ReactElement => {
                 children={props.buttonContent}
                 style={buttonStyle}
             />
-            <Popup
-                opened={popupVisible}
-                width={panelWidth}
-                height={panelHeight}
-                target={buttonRef.current}
-            >
+            <Popup opened={popupVisible} width={panelWidth} height={panelHeight} target={buttonRef.current}>
                 <Panel
                     caption={props.panelTitle}
                     footerTemplate={
@@ -273,11 +267,7 @@ const UMChat = (props: IUMChatProps): ReactElement => {
                     }
                     onClose={toggleHandler}
                 >
-                    <CardsList
-                        cards={cardsModel.getCards()}
-                        loading={loading}
-                        onSend={sendCardHandler}
-                    />
+                    <CardsList cards={cardsModel.getCards()} loading={loading} onSend={sendCardHandler} />
                 </Panel>
             </Popup>
         </div>

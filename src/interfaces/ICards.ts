@@ -54,7 +54,7 @@ export interface IList {
     footer?: IFooter;
 }
 
-export type TCardType = 'text' | 'card' | 'list' | 'error';
+export type TCardType = "text" | "card" | "list" | "error";
 
 export interface ICards {
     /**

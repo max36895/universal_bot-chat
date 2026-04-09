@@ -9,9 +9,9 @@ import {
     forwardRef,
 } from 'react';
 
-export type TButtonSize = 's' | 'm' | 'l';
-export type TButtonViewMode = 'filled' | 'outlined';
-export type TButtonStyle = 'primary' | 'secondary';
+export type TButtonSize = "s" | "m" | "l";
+export type TButtonViewMode = "filled" | "outlined";
+export type TButtonStyle = "primary" | "secondary";
 
 interface IButtonProps {
     /**
@@ -94,10 +94,10 @@ const Button = (props: IButtonProps, ref: LegacyRef<HTMLButtonElement>): ReactEl
     };
 
     const className = `um-Button um-Button_size-${size} um-Button_size-${size}-${
-        props.icon && !props.caption ? 'circle' : 'button'
-    }${props.icon && !props.caption ? ' um-Button-circle' : ''} um-font-size-${fontSize} um-Button_style-${readOnly ? 'readonly' : style}${
-        readOnly ? '' : ' um-clickable'
-    } um-Button_mode-${viewMode} ${props.className || ''}`;
+        props.icon && !props.caption ? "circle" : "button"
+    }${props.icon && !props.caption ? " um-Button-circle" : ""} um-font-size-${fontSize} um-Button_style-${
+        readOnly ? "readonly" : style
+    }${readOnly ? "" : " um-clickable"} um-Button_mode-${viewMode} ${props.className || ""}`;
 
     let content;
     if (props.children) {
@@ -105,9 +105,9 @@ const Button = (props: IButtonProps, ref: LegacyRef<HTMLButtonElement>): ReactEl
     } else {
         let icon = null;
         if (props.icon) {
-            if (typeof props.icon !== 'string' && isValidElement(props.icon as ReactElement)) {
+            if (typeof props.icon !== "string" && isValidElement(props.icon as ReactElement)) {
                 icon = cloneElement(props.icon as ReactElement, {
-                    className: `${props.icon.props?.className || ''} um-Button_icon_size-${size}`,
+                    className: `${props.icon.props?.className || ""} um-Button_icon_size-${size}`,
                 });
             } else {
                 icon = <i className={`um-Button_icon ${props.icon}`} />;
@@ -116,11 +116,9 @@ const Button = (props: IButtonProps, ref: LegacyRef<HTMLButtonElement>): ReactEl
 
         let caption = null;
         if (props.caption) {
-            const paddingClass = icon ? ` um-Button_caption-padding-${captionPosition}` : '';
+            const paddingClass = icon ? ` um-Button_caption-padding-${captionPosition}` : "";
             caption = (
-                <span
-                    className={`um-Button_caption um-Button_caption-position-${captionPosition}${paddingClass}`}
-                >
+                <span className={`um-Button_caption um-Button_caption-position-${captionPosition}${paddingClass}`}>
                     {props.caption}
                 </span>
             );
