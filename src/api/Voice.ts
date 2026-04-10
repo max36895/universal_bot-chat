@@ -1,5 +1,5 @@
 // @ts-ignore
-const SpeechRecognition = SpeechRecognition || window.webkitSpeechRecognition;
+const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
 // @ts-ignore
 const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
 
